@@ -1,13 +1,15 @@
 # Laravel Vision
 
-Coming soon. This package is under current work in progress and it will be a wrapper around popular image recognition libraries/services such as AWS Rekognition or Google Vision.
+Coming soon. This is a Laravel wrapper for AWS Rekognition and Google Cloud Vision to easily be able to exchange these platforms if needed.
+
+> Allows developers to easily integrate vision detection features within applications, including image labeling, face and landmark detection, optical character recognition (OCR), and tagging of explicit content.
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require meema/laravel-vision
+composer require meema/laravel-image-recognition
 ```
 
 ## Usage

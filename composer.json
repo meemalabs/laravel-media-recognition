@@ -1,13 +1,17 @@
 {
-    "name": "meema/laravel-vision",
+    "name": "meema/laravel-image-recognition",
     "description": "This package a Laravel wrapper around image recognition services.",
     "keywords": [
         "meema",
         "cion",
         "laravel",
-        "laravel-vision"
+        "aws",
+        "rekognition",
+        "google cloud",
+        "vision",
+        "laravel-image-recognition"
     ],
-    "homepage": "https://github.com/meemaio/laravel-vision",
+    "homepage": "https://github.com/meemaio/laravel-image-recognition",
     "license": "MIT",
     "authors": [
         {
@@ -26,12 +30,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Meema\\LaravelVision\\": "src"
+            "Meema\\LaravelImageRecognition\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Meema\\LaravelVision\\Tests\\": "tests"
+            "Meema\\LaravelImageRecognition\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -44,10 +48,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Meema\\LaravelVision\\VisionServiceProvider"
+                "Meema\\LaravelImageRecognition\\ImageRecognitionServiceProvider"
             ],
             "aliases": {
-                "Vision": "Meema\\LaravelVision\\VisionFacade"
+                "Recognize": "Meema\\LaravelImageRecognition\\ImageRecognitionFacade"
             }
         }
     }

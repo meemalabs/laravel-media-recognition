@@ -1,8 +1,8 @@
 <?php
 
-namespace Meema\LaravelVision;
+namespace Meema\LaravelImageRecognition;
 
-class MeemaClass
+class ImageRecognitionClass
 {
     /**
      * Create a new Laravel File Preview Instance.

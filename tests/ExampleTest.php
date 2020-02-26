@@ -1,6 +1,6 @@
 <?php
 
-namespace Meema\LaravelVision\Tests;
+namespace Meema\LaravelImageRecognition\Tests;
 
 use PHPUnit\Framework\TestCase;
 

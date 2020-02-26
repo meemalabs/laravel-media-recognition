@@ -1,10 +1,10 @@
 <?php
 
-namespace Meema\LaravelVision;
+namespace Meema\LaravelImageRecognition;
 
 use Illuminate\Support\ServiceProvider;
 
-class VisionServiceProvider extends ServiceProvider
+class ImageRecognitionServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -13,7 +13,7 @@ class VisionServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('vision.php'),
+                __DIR__.'/../config/config.php' => config_path('image-recognition.php'),
             ], 'config');
         }
     }
@@ -23,6 +23,6 @@ class VisionServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'vision');
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'image-recognition');
     }
 }

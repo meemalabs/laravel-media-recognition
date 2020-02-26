@@ -1,13 +1,13 @@
 <?php
 
-namespace Meema\LaravelVision;
+namespace Meema\LaravelImageRecognition;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Meema\LaravelVision\VisionClass
+ * @see \Meema\LaravelImageRecognition\VisionClass
  */
-class VisionFacade extends Facade
+class ImageRecognitionFacade extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -16,6 +16,6 @@ class VisionFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'vision';
+        return 'recognize';
     }
 }
