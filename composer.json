@@ -1,41 +1,41 @@
 {
-    "name": "meema/laravel-image-recognition",
-    "description": "This package a Laravel wrapper around image recognition services.",
+    "name": "meema/laravel-media-recognition",
+    "description": "Easily & quickly integrate your application with AWS Rekognition. Other drivers may be added in the near future.",
     "keywords": [
-        "meema",
-        "cion",
-        "laravel",
-        "aws",
         "rekognition",
-        "google cloud",
-        "vision",
-        "laravel-image-recognition"
+        "recognition",
+        "image analysis",
+        "meema",
+        "laravel",
+        "aws"
     ],
-    "homepage": "https://github.com/meemaio/laravel-image-recognition",
+    "homepage": "https://github.com/meemalabs/laravel-media-recognition",
     "license": "MIT",
+    "type": "library",
     "authors": [
         {
             "name": "Chris Breuer",
-            "email": "chris@cion.agency",
-            "homepage": "https://cion.agency",
-            "role": "Developer"
+            "email": "chris@meema.io"
         }
     ],
     "require": {
-        "php": "^7.3"
+        "php": "^7.4",
+        "ext-json": "*",
+        "aws/aws-sdk-php": "^3.163",
+        "aws/aws-php-sns-message-validator": "^1.6"
     },
     "require-dev": {
-        "symfony/var-dumper": "^4.3",
-        "phpunit/phpunit": "^8.2"
+        "orchestra/testbench": "^3.5.0|^3.6.0|^4.0|^5.0|^6.0",
+        "phpunit/phpunit": "^5.0|^6.0|^8.0|^9.3"
     },
     "autoload": {
         "psr-4": {
-            "Meema\\LaravelImageRecognition\\": "src"
+            "Meema\\MediaRecognition\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Meema\\LaravelImageRecognition\\Tests\\": "tests"
+            "Meema\\MediaRecognition\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -48,10 +48,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Meema\\LaravelImageRecognition\\ImageRecognitionServiceProvider"
+                "Meema\\MediaRecognition\\Providers\\MediaRecognitionServiceProvider"
             ],
             "aliases": {
-                "Recognize": "Meema\\LaravelImageRecognition\\ImageRecognitionFacade"
+                "MediaRecognition": "Meema\\MediaRecognition\\Facades\\MediaRecognitionFacade"
             }
         }
     }

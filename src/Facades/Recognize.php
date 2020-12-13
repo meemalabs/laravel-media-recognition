@@ -1,13 +1,13 @@
 <?php
 
-namespace Meema\LaravelImageRecognition;
+namespace Meema\MediaRecognition\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Meema\LaravelImageRecognition\VisionClass
+ * @method static \Aws\Rekognition\RekognitionClient getClient()
  */
-class ImageRecognitionFacade extends Facade
+class Recognize extends Facade
 {
     /**
      * Get the registered name of the component.
