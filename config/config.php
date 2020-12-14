@@ -12,4 +12,10 @@ return [
     'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     'version' => 'latest',
 
+    /*
+     * The disk where the image/video to be analyzed is stored. Choose
+     * one of the disks you've configured in config/filesystems.php.
+    */
+    'disk' => env('RECOGNITION_DISK', 'local'),
+
 ];

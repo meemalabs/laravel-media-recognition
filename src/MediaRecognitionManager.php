@@ -88,6 +88,6 @@ class MediaRecognitionManager extends Manager
      */
     public function getDefaultDriver(): string
     {
-        return 'recognition';
+        return 'rekognition';
     }
 }

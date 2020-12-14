@@ -51,7 +51,7 @@
                 "Meema\\MediaRecognition\\Providers\\MediaRecognitionServiceProvider"
             ],
             "aliases": {
-                "MediaRecognition": "Meema\\MediaRecognition\\Facades\\MediaRecognitionFacade"
+                "MediaRecognition": "Meema\\MediaRecognition\\Facades\\Recognize"
             }
         }
     }

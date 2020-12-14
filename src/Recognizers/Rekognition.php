@@ -4,10 +4,14 @@ namespace Meema\MediaRecognition\Recognizers;
 
 use Aws\Credentials\Credentials;
 use Aws\Rekognition\RekognitionClient;
+use Illuminate\Support\Facades\Storage;
 use Meema\MediaRecognition\Contracts\MediaRecognition;
+use Meema\MediaRecognition\Traits\InteractsWithStorage;
 
 class Rekognition implements MediaRecognition
 {
+    use InteractsWithStorage;
+
     /**
      * Client instance of MediaRecognition.
      *
@@ -22,13 +26,7 @@ class Rekognition implements MediaRecognition
      */
     public function __construct(RekognitionClient $client)
     {
-        $config = config('media-recognition');
-
-        $this->client = new RekognitionClient([
-            'version' => $config['version'],
-            'region' => $config['region'],
-            'credentials' => new Credentials($config['credentials']['key'], $config['credentials']['secret']),
-        ]);
+        $this->client = $client;
     }
 
     /**
@@ -42,15 +40,42 @@ class Rekognition implements MediaRecognition
     }
 
     /**
-     * Cancels an active job.
-     *
-     * @param string $id
-     * @return \Aws\Result
+     * Detects labels/objects in an image.
      */
-    public function testing(string $id)
+    public function detectFaces()
     {
-        return $this->client->cancelJob([
-            'Id' => $id,
+        return $this->client->detectLabels([
+            'Image' => [
+                'S3Object' => [
+                    'Bucket' => 'meema-stage',
+                    'Name' => 'test-media/people.jpg',
+                ],
+            ],
         ]);
+    }
+
+    /**
+     * Detects faces in an image.
+     */
+    public function detectFaces()
+    {
+        //if ($this->path && $this->disk) {
+        //    Storage::disk($this->disk)->path($this->path);
+        //}
+
+        return $this->client->detectFaces();
+    }
+
+    /**
+     * Detects text in an image (OCR).
+     */
+    public function detectText($minConfidence = 50)
+    {
+        $bytes = '';
+
+        $results = $this->client->detectText([
+            'Image' => ['Bytes' => $bytes],
+            'MinConfidence' => $minConfidence,
+        ])['TextDetections'];
     }
 }
