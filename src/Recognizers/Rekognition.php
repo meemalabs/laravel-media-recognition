@@ -138,7 +138,7 @@ class Rekognition implements MediaRecognitionInterface
     }
 
     /**
-     * Detects faces & analyzes them.
+     * Detects faces in an image & analyzes them.
      *
      * @param int|null $mediaId
      * @param array $attributes
@@ -159,7 +159,8 @@ class Rekognition implements MediaRecognitionInterface
     }
 
     /**
-     * Detects faces & analyzes them.
+     * Detects moderation labels in an image.
+     * This can be useful for children-friendly images or NSFW images.
      *
      * @param int|null $mediaId
      * @param int|null $minConfidence
