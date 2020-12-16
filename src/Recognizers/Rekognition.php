@@ -34,6 +34,13 @@ class Rekognition implements MediaRecognitionInterface
     protected ?string $blob = null;
 
     /**
+     * The relating media model's id.
+     *
+     * @var int|null
+     */
+    protected ?int $mediaId = null;
+
+    /**
      * Construct converter.
      *
      * @param \Aws\Rekognition\RekognitionClient $client
@@ -70,17 +77,17 @@ class Rekognition implements MediaRecognitionInterface
     /**
      * Sets the image to be analyzed.
      *
-     * @return array
+     * @return void
      * @throws \Exception
      */
-    protected function setImage(): array
+    protected function setImageSettings(): void
     {
         if (is_string($this->blob)) {
-            $settings['Image'] = [
+            $this->settings['Image'] = [
                 'Bytes' => $this->blob,
             ];
 
-            return $settings;
+            return;
         }
 
         $disk = $this->disk ?? config('media-recognition.disk');
@@ -90,14 +97,50 @@ class Rekognition implements MediaRecognitionInterface
             throw new Exception('Please make sure to set a S3 bucket name.');
         }
 
-        $settings['Image'] = [
+        $this->settings['Image'] = [
+            'S3Object' => [
+                'Bucket' => $bucketName,
+                'Name' => $this->path,
+            ],
+        ];
+    }
+
+    /**
+     * Sets the video to be analyzed.
+     *
+     * @param $type - used to create a readable identifier.
+     * @return void
+     * @throws \Exception
+     */
+    protected function setVideoSettings($type): void
+    {
+        $disk = $this->disk ?? config('media-recognition.disk');
+        $bucketName = config("filesystems.disks.$disk.bucket");
+
+        if (! $bucketName) {
+            throw new Exception('Please make sure to set a S3 bucket name.');
+        }
+
+        $this->settings['Video'] = [
             'S3Object' => [
                 'Bucket' => $bucketName,
                 'Name' => $this->path,
             ],
         ];
 
-        return $settings;
+        $this->settings['NotificationChannel'] = [
+            'RoleArn' => config('media-recognition.iam_arn'),
+            'SNSTopicArn' => config('media-recognition.sns_topic_arn'),
+        ];
+
+        $uniqueId = $type.'_'.$this->mediaId;
+        // Idempotent token used to identify the start request.
+        // If you use the same token with multiple StartCelebrityRecognition requests, the same JobId is returned.
+        // Use ClientRequestToken to prevent the same job from being accidentally started more than once.
+        $this->settings['ClientRequestToken'] = $uniqueId;
+
+        // the JobTag is set to be the media id, so we can adjust the media record with the results once the webhook comes in
+        $this->settings['JobTag'] = $uniqueId;
     }
 
     /**
@@ -111,7 +154,7 @@ class Rekognition implements MediaRecognitionInterface
      */
     public function detectLabels($mediaId = null, $minConfidence = null, $maxLabels = null)
     {
-        $settings = $this->setImage();
+        $settings = $this->setImageSettings();
 
         $settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
 
@@ -138,6 +181,32 @@ class Rekognition implements MediaRecognitionInterface
     }
 
     /**
+     * Starts the detection of labels/objects in a video.
+     *
+     * @param int $mediaId
+     * @param int|null $minConfidence
+     * @param int $maxResults
+     * @return \Aws\Result
+     * @throws \Exception
+     */
+    public function startDetectingLabels(int $mediaId, $minConfidence = null, $maxResults = 1000)
+    {
+        $this->mediaId = $mediaId;
+
+        $this->setVideoSettings('StartLabelDetection');
+        $this->settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
+        $this->settings['MaxResults'] = $maxResults;
+
+        $results = $this->client->startLabelDetection($this->settings);
+
+        if ($results['JobId']) {
+            $this->updateJobId($results['JobId']);
+        }
+
+        return $results;
+    }
+
+    /**
      * Detects faces in an image & analyzes them.
      *
      * @param int|null $mediaId
@@ -147,7 +216,7 @@ class Rekognition implements MediaRecognitionInterface
      */
     public function detectFaces($mediaId = null, $attributes = ['DEFAULT'])
     {
-        $settings = $this->setImage();
+        $settings = $this->setImageSettings();
 
         $settings['Attributes'] = $attributes;
 
@@ -169,7 +238,7 @@ class Rekognition implements MediaRecognitionInterface
      */
     public function detectModeration($mediaId = null, $minConfidence = null)
     {
-        $settings = $this->setImage();
+        $settings = $this->setImageSettings();
 
         $settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
 
@@ -190,7 +259,7 @@ class Rekognition implements MediaRecognitionInterface
      */
     public function detectText($mediaId = null, $minConfidence = null)
     {
-        $settings = $this->setImage();
+        $settings = $this->setImageSettings();
 
         $results = $this->client->detectText($settings);
 
@@ -222,5 +291,26 @@ class Rekognition implements MediaRecognitionInterface
         ], [$type => $results->toArray()]);
 
         return $results;
+    }
+
+    /**
+     * @param $jobId
+     * @return void
+     * @throws \Exception
+     */
+    protected function updateJobId($jobId)
+    {
+        if (! config('media-recognition.track_media_recognitions')) {
+            return;
+        }
+
+        if (is_null($this->mediaId)) {
+            throw new Exception('Please make sure to set a $mediaId.');
+        }
+
+        MediaRecognition::updateOrCreate([
+            'model_id' => $this->mediaId,
+            'model_type' => config('media-converter.media_model'),
+        ], ['job_id' => $jobId]);
     }
 }
