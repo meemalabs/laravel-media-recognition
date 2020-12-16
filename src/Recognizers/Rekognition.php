@@ -109,7 +109,6 @@ class Rekognition implements MediaRecognitionInterface
      */
     protected function setImage(): array
     {
-
         if (is_string($this->blob)) {
             $settings['Image'] = [
                 'Bytes' => $this->blob,

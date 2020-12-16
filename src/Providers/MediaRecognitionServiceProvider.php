@@ -4,8 +4,8 @@ namespace Meema\MediaRecognition\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use Meema\MediaRecognition\Http\Middleware\VerifySignature;
 use Meema\MediaRecognition\Facades\Recognize;
+use Meema\MediaRecognition\Http\Middleware\VerifySignature;
 use Meema\MediaRecognition\MediaRecognitionManager;
 
 class MediaRecognitionServiceProvider extends ServiceProvider

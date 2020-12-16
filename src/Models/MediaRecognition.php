@@ -4,7 +4,6 @@ namespace Meema\MediaRecognition\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Support\Str;
 
 /**
  * MediaConversion Model.
