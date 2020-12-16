@@ -157,6 +157,7 @@ class Rekognition implements MediaRecognitionInterface
 
         return $results;
     }
+
     /**
      * Detects faces & analyzes them.
      *
