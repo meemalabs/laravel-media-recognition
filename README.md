@@ -1,4 +1,4 @@
-# MediaRecognition Package for Laravel
+# Media Recognition Package for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/meema/laravel-media-recognition.svg?style=flat-square)](https://packagist.org/packages/meema/laravel-media-recognition)
 [![StyleCI](https://github.styleci.io/repos/264578171/shield?branch=master)](https://github.styleci.io/repos/264578171)
@@ -43,12 +43,19 @@ Next, please add the following keys their values to your `.env` file.
 AWS_ACCESS_KEY_ID=xxxxxxx
 AWS_SECRET_ACCESS_KEY=xxxxxxx
 AWS_DEFAULT_REGION=us-east-1
+AWS_SNS_TOPIC_ARN=arn:aws:sns:us-east-1:000000000000:RekognitionUpdate
+AWS_S3_BUCKET=bucket-name
 ```
 
 The following is the content of the published config file:
 
 ```php
 return [
+    /*
+    * The fully qualified class name of the "media" model.
+    */
+    'media_model' => \App\Models\Media::class,
+
     /**
      * IAM Credentials from AWS.
      */
@@ -58,10 +65,92 @@ return [
     ],
 
     'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    
+    /**
+     * Specify the version of the Rekognition API you would like to use.
+     * Please only adjust this value if you know what you are doing.
+     */
     'version' => 'latest',
+
+    /*
+     * The S3 bucket name where the image/video to be analyzed is stored.
+    */
+    'bucket' => env('AWS_S3_BUCKET'),
+
+    /**
+     * Specify the IAM Role ARN.
+     *
+     * You can find the Role ARN visiting the following URL:
+     * https://console.aws.amazon.com/iam/home?region=us-east-1#/roles
+     * Please note to adjust the "region" in the URL above.
+     * Tip: in case you need to create a new Role, you may name it `Rekognition_Default_Role`
+     * by making use of this name, AWS Rekognition will default to using this IAM Role.
+     */
+    'iam_arn' => env('AWS_IAM_ARN'),
+
+    /**
+     * Specify the AWS SNS Topic ARN.
+     * This triggers the webhook to be sent.
+     *
+     * It can be found by selecting your "Topic" when visiting the following URL:
+     * https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics
+     * Please note to adjust the "region" in the URL above.
+     */
+    'sns_topic_arn' => env('AWS_SNS_TOPIC_ARN'),
 
 ];
 ```
+
+### Set Up Webhooks (optional)
+
+This package makes use of webhooks in order to communicate the updates of the AWS Rekognition job. Please follow the following steps to enable webhooks for yourself.
+
+Please note, this is only optional, and you should only enable this if you want to track the Rekognition job's results for long-lasting processes (e.g. analyzing video).
+
+#### Setup Expose
+
+First, let's use [Expose](https://beyondco.de/docs/expose/getting-started/installation) to "expose" / generate a URL for our local API. Follow the Expose documentation on how you can get started and generate a "live" & sharable URL for within your development environment.
+
+It should be as simple as `cd my-laravel-api && expose`.
+
+#### Setup AWS SNS Topic & Subscription
+
+Second, let's create an AWS SNS Topic which will notify our "exposed" API endpoint:
+
+1. Open the Amazon SNS console at https://console.aws.amazon.com/sns/v3/home
+2. In the navigation pane, choose Topics, and then choose "Create new topic".
+3. For Topic name, enter `RekognitionUpdate`, and then choose "Create topic".
+
+![AWS SNS Topic Creation Screenshot](https://i.imgur.com/4MKtfuY.png)
+
+4. Choose the topic ARN link for the topic that you just created. It looks something like this: `arn:aws:sns:region:123456789012:RekognitionUpdate`.
+5. On the Topic details: `RekognitionUpdate` page, in the Subscriptions section, choose "Create subscription".
+6. For Protocol, choose "HTTPS". For Endpoint, enter exposed API URL that you generated in a previous step, including the API URI.
+
+For example,
+```
+https://meema-api.sharedwithexpose.com/api/webhooks/media-recognition
+```
+
+7. Choose "Create subscription".
+
+#### Confirming Your Subscription
+
+Finally, we need to confirm the subscription which is easily done by navigating to the `MediaConvertJobUpdate` Topic page. There, you should see the following section:
+
+![AWS SNS Subscription Confirmation Screenshot](https://i.imgur.com/oTPwNen.png)
+
+By default, AWS will have sent a post request to URL you defined in your "Subscription" setup. You can view request in the Expose interface, by visiting the "Dashboard Url", which should be similar to: `http://127.0.0.1:4040`
+
+Once you are in the Expose dashboard, you need to locate the `SubscribeURL` value. Once located, copy it and use it to confirm your SNS Topic Subscription.
+
+![AWS SNS Subscription Confirmation Screenshot](https://i.imgur.com/ECGIBUY.png)
+
+todo
+Lastly, the second & final step of the "Rule creation" prompts you to enter a name and an optional description. You may use any name, e.g. `mediaconvert-job-updates`.
+
+Now, your API will receive webhooks!
+
 
 ### Testing
 

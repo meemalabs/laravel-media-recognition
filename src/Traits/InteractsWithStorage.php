@@ -19,7 +19,7 @@ trait InteractsWithStorage
     protected string $path;
 
     /**
-     * Set where to store the converted file.
+     * Set which S3 disk to use.
      *
      * @param string $disk
      *
@@ -33,7 +33,7 @@ trait InteractsWithStorage
     }
 
     /**
-     * Set where to store the converted file.
+     * The equivalent of the S3 Key / the path of the file inside the bucket.
      *
      * @param string $path
      *
