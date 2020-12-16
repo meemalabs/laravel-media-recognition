@@ -29,9 +29,9 @@ class Rekognition implements MediaRecognitionInterface
     /**
      * The input image as base64-encoded bytes.
      *
-     * @var string
+     * @var string|null
      */
-    protected string $blob;
+    protected ?string $blob = null;
 
     /**
      * Construct converter.
@@ -65,40 +65,6 @@ class Rekognition implements MediaRecognitionInterface
         $this->blob = $blob;
 
         return $this;
-    }
-
-    /**
-     * Detects labels/objects in an image.
-     *
-     * @param int|null $mediaId
-     * @param int|null $minConfidence
-     * @param int|null $maxLabels
-     * @return \Aws\Result
-     * @throws \Exception
-     */
-    public function detectLabels($mediaId = null, int $minConfidence = null, int $maxLabels = null)
-    {
-        $settings = $this->setImage();
-
-        $settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
-
-        if (is_int($maxLabels)) {
-            $settings['MaxLabels'] = $maxLabels;
-        }
-
-        $results = $this->client->detectLabels($settings);
-
-        if (! config('media-recognition.track_media_recognitions')) {
-            return $results;
-        }
-
-        if (is_null($mediaId)) {
-            throw new Exception('Please make sure to set a $mediaId.');
-        }
-
-        MediaRecognition::create($results, $mediaId);
-
-        return $results;
     }
 
     /**
@@ -136,33 +102,123 @@ class Rekognition implements MediaRecognitionInterface
 
     /**
      * Detects labels/objects in an image.
+     *
+     * @param int|null $mediaId
+     * @param int|null $minConfidence
+     * @param int|null $maxLabels
+     * @return \Aws\Result
+     * @throws \Exception
      */
-    public function detectFaces()
+    public function detectLabels($mediaId = null, $minConfidence = null, $maxLabels = null)
     {
-        //return $this->client->detectLabels([
-        //'NotificationChannel' => [
-        //    "RoleArn" => config('media-recognition.iam_arn'),
-        //    "SNSTopicArn" => config('media-recognition.sns_topic_arn'),
-        //],
-        //    'Image' => [
-        //        'S3Object' => [
-        //            'Bucket' => 'meema-stage',
-        //            'Name' => 'test-media/people.jpg',
-        //        ],
-        //    ],
-        //]);
+        $settings = $this->setImage();
+
+        $settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
+
+        if (is_int($maxLabels)) {
+            $settings['MaxLabels'] = $maxLabels;
+        }
+
+        $results = $this->client->detectLabels($settings);
+
+        if (! config('media-recognition.track_media_recognitions')) {
+            return $results;
+        }
+
+        if (is_null($mediaId)) {
+            throw new Exception('Please make sure to set a $mediaId.');
+        }
+
+        MediaRecognition::updateOrCreate([
+            'model_id' => $mediaId,
+            'model_type' => config('media-converter.media_model'),
+        ], ['labels' => $results->toArray()]);
+
+        return $results;
+    }
+
+    /**
+     * Detects faces & analyzes them.
+     *
+     * @param int|null $mediaId
+     * @param array $attributes
+     * @return \Aws\Result
+     * @throws \Exception
+     */
+    public function detectFaces($mediaId = null, $attributes = ['DEFAULT'])
+    {
+        $settings = $this->setImage();
+
+        $settings['Attributes'] = $attributes;
+
+        $results = $this->client->detectFaces($settings);
+
+        $this->updateOrCreate('faces', $mediaId, $results);
+
+        return $results;
+    }
+    /**
+     * Detects faces & analyzes them.
+     *
+     * @param int|null $mediaId
+     * @param int|null $minConfidence
+     * @return \Aws\Result
+     * @throws \Exception
+     */
+    public function detectModeration($mediaId = null, $minConfidence = null)
+    {
+        $settings = $this->setImage();
+
+        $settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
+
+        $results = $this->client->detectModerationLabels($settings);
+
+        $this->updateOrCreate('moderation', $mediaId, $results);
+
+        return $results;
     }
 
     /**
      * Detects text in an image (OCR).
+     *
+     * @param int|null $mediaId
+     * @param int|null $minConfidence
+     * @return \Aws\Result
+     * @throws \Exception
      */
-    public function detectText($minConfidence = 50)
+    public function detectText($mediaId = null, $minConfidence = null)
     {
-        $bytes = '';
+        $settings = $this->setImage();
 
-        $results = $this->client->detectText([
-            'Image' => ['Bytes' => $bytes],
-            'MinConfidence' => $minConfidence,
-        ])['TextDetections'];
+        $results = $this->client->detectText($settings);
+
+        $this->updateOrCreate('ocr', $mediaId, $results);
+
+        return $results;
+    }
+
+    /**
+     * @param $type
+     * @param $mediaId
+     * @param $results
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function updateOrCreate($type, $mediaId, $results)
+    {
+        if (! config('media-recognition.track_media_recognitions')) {
+            return $results;
+        }
+
+        if (is_null($mediaId)) {
+            throw new Exception('Please make sure to set a $mediaId.');
+        }
+
+        MediaRecognition::updateOrCreate([
+            'model_id' => $mediaId,
+            'model_type' => config('media-converter.media_model'),
+        ], [$type => $results->toArray()]);
+
+        return $results;
     }
 }
