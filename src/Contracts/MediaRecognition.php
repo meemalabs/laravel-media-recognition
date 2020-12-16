@@ -15,5 +15,4 @@ interface MediaRecognition
     public function detectFaces();
 
     public function detectText();
-
 }
