@@ -16,7 +16,10 @@ class CreateMediaRecognitionsTable extends Migration
         Schema::create('media_recognitions', function (Blueprint $table) {
             $table->id();
             $table->morphs('model');
-            $table->string('job_id')->nullable();
+            $table->string('labels_job_id')->nullable();
+            $table->string('faces_job_id')->nullable();
+            $table->string('moderation_job_id')->nullable();
+            $table->string('ocr_job_id')->nullable();
             $table->json('labels')->nullable();
             $table->json('faces')->nullable();
             $table->json('moderation')->nullable();

@@ -4,6 +4,12 @@ namespace Meema\MediaRecognition\Http\Controllers;
 
 use Aws\Sns\Message;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Meema\MediaRecognition\Events\VideoFacesAreAnalyzed;
+use Meema\MediaRecognition\Events\VideoLabelsAreAnalyzed;
+use Meema\MediaRecognition\Events\VideoModerationComplete;
+use Meema\MediaRecognition\Facades\Recognize;
 
 class IncomingWebhookController extends Controller
 {
@@ -18,47 +24,35 @@ class IncomingWebhookController extends Controller
     public function __invoke()
     {
         $message = json_decode(Message::fromRawPostData()['Message'], true);
-        $detail = $message['detail'];
-        $status = $detail['status'];
 
-        try {
-            $this->fireEventFor($status, $message);
-        } catch (\Exception $e) {
-            throw new \Exception($e);
+        if ($message['Status'] !== 'SUCCEEDED') {
+            return;
         }
-    }
 
-    /**
-     * @param $status
-     * @param $message
-     * @throws \Exception
-     */
-    public function fireEventFor($status, $message)
-    {
-        switch ($status) {
-            case 'PROGRESSING':
-                event(new ConversionIsProgressing($message));
-                break;
-            case 'INPUT_INFORMATION':
-                event(new ConversionHasInputInformation($message));
-                break;
-            case 'COMPLETE':
-                event(new ConversionHasCompleted($message));
-                break;
-            case 'STATUS_UPDATE':
-                event(new ConversionHasStatusUpdate($message));
-                break;
-            case 'NEW_WARNING':
-                event(new ConversionHasNewWarning($message));
-                break;
-            case 'QUEUE_HOP':
-                event(new ConversionQueueHop($message));
-                break;
-            case 'ERROR':
-                event(new ConversionHasError($message));
-                break;
-            default:
-                throw new \Exception();
+        $arr = explode('_', $message['JobTag']);
+        $type = $arr[0];
+        $mediaId = (int) $arr[1];
+
+        if ($type === 'labels') {
+            Recognize::getLabelsByJobId($message['JobId'], $mediaId);
+
+            event(new VideoLabelsAreAnalyzed($message));
+
+            return;
+        }
+
+        if ($type === 'faces') {
+            Recognize::getFacesByJobId($message['JobId'], $mediaId);
+
+            event(new VideoFacesAreAnalyzed($message));
+
+            return;
+        }
+
+        if ($type === 'moderation') {
+            Recognize::getModerationByJobId($message['JobId'], $mediaId);
+
+            event(new VideoModerationComplete($message));
         }
     }
 }
