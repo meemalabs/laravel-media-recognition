@@ -4,8 +4,6 @@ namespace Meema\MediaRecognition\Http\Controllers;
 
 use Aws\Sns\Message;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use Meema\MediaRecognition\Events\VideoFacesAreAnalyzed;
 use Meema\MediaRecognition\Events\VideoLabelsAreAnalyzed;
 use Meema\MediaRecognition\Events\VideoModerationComplete;
