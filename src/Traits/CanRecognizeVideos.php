@@ -160,7 +160,7 @@ trait CanRecognizeVideos
             'JobId' => $jobId,
         ]);
 
-        $this->updateVideoResults($results->toArray(),'labels', $mediaId);
+        $this->updateVideoResults($results->toArray(), 'labels', $mediaId);
 
         return $results;
     }
@@ -179,7 +179,7 @@ trait CanRecognizeVideos
             'JobId' => $jobId,
         ]);
 
-        $this->updateVideoResults($results->toArray(),'faces', $mediaId);
+        $this->updateVideoResults($results->toArray(), 'faces', $mediaId);
 
         return $results;
     }
@@ -198,7 +198,7 @@ trait CanRecognizeVideos
             'JobId' => $jobId,
         ]);
 
-        $this->updateVideoResults($results->toArray(),'moderation', $mediaId);
+        $this->updateVideoResults($results->toArray(), 'moderation', $mediaId);
 
         return $results;
     }
@@ -217,7 +217,7 @@ trait CanRecognizeVideos
             'JobId' => $jobId,
         ]);
 
-        $this->updateVideoResults($results->toArray(),'ocr', $mediaId);
+        $this->updateVideoResults($results->toArray(), 'ocr', $mediaId);
 
         return $results;
     }
