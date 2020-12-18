@@ -143,11 +143,10 @@ trait CanRecognizeImages
      * Detects text in an image (OCR).
      *
      * @param int|null $mediaId
-     * @param int|null $minConfidence
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function detectText($mediaId = null, $minConfidence = null)
+    public function detectText($mediaId = null)
     {
         $this->setImageSettings();
 

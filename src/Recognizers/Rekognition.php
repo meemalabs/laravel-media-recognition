@@ -56,25 +56,6 @@ class Rekognition implements MediaRecognitionInterface
     }
 
     /**
-     * Get the labels from a video analysis whenever.
-     *
-     * @param string $jobId
-     * @param int $mediaId
-     * @return \Aws\Result
-     * @throws \Exception
-     */
-    public function getLabelsByJobId(string $jobId, int $mediaId)
-    {
-        $results = $this->client->getLabelDetection([
-            'JobId' => $jobId,
-        ]);
-
-        $this->updateVideoLabels($results->toArray(), $mediaId);
-
-        return $results;
-    }
-
-    /**
      * @param $type
      * @param $mediaId
      * @param $results
@@ -123,17 +104,18 @@ class Rekognition implements MediaRecognitionInterface
 
     /**
      * @param array $results
+     * @param string $type
      * @param int $mediaId
      * @return void
      */
-    protected function updateVideoLabels(array $results, int $mediaId)
+    protected function updateVideoResults(array $results, string $type, int $mediaId)
     {
         if (! config('media-recognition.track_media_recognitions')) {
             return;
         }
 
         $mediaRecognition = MediaRecognition::where('model_id', $mediaId)->firstOrFail();
-        $mediaRecognition->labels = $results;
+        $mediaRecognition->$type = $results;
         $mediaRecognition->save();
     }
 }

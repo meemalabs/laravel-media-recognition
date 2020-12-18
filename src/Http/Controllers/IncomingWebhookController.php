@@ -4,9 +4,10 @@ namespace Meema\MediaRecognition\Http\Controllers;
 
 use Aws\Sns\Message;
 use Illuminate\Routing\Controller;
-use Meema\MediaRecognition\Events\VideoFacesAreAnalyzed;
-use Meema\MediaRecognition\Events\VideoLabelsAreAnalyzed;
-use Meema\MediaRecognition\Events\VideoModerationComplete;
+use Meema\MediaRecognition\Events\VideoFacialAnalysisIsCompleted;
+use Meema\MediaRecognition\Events\VideoLabelAnalysisIsCompleted;
+use Meema\MediaRecognition\Events\VideoModerationIsCompleted;
+use Meema\MediaRecognition\Events\VideoTextAnalysisIsCompleted;
 use Meema\MediaRecognition\Facades\Recognize;
 
 class IncomingWebhookController extends Controller
@@ -31,26 +32,40 @@ class IncomingWebhookController extends Controller
         $type = $arr[0];
         $mediaId = (int) $arr[1];
 
-        if ($type === 'labels') {
-            Recognize::getLabelsByJobId($message['JobId'], $mediaId);
-
-            event(new VideoLabelsAreAnalyzed($message));
-
-            return;
+        try {
+            $this->fireEventFor($type, $message, $mediaId);
+        } catch (\Exception $e) {
+            throw new \Exception($e);
         }
+    }
 
-        if ($type === 'faces') {
-            Recognize::getFacesByJobId($message['JobId'], $mediaId);
-
-            event(new VideoFacesAreAnalyzed($message));
-
-            return;
-        }
-
-        if ($type === 'moderation') {
-            Recognize::getModerationByJobId($message['JobId'], $mediaId);
-
-            event(new VideoModerationComplete($message));
+    /**
+     * @param string $type
+     * @param array $message
+     * @param int $mediaId
+     * @throws \Exception
+     */
+    public function fireEventFor(string $type, array $message, int $mediaId)
+    {
+        switch ($type) {
+            case 'labels':
+                Recognize::getLabelsByJobId($message['JobId'], $mediaId);
+                event(new VideoLabelAnalysisIsCompleted($message));
+                break;
+            case 'faces':
+                Recognize::getFacesByJobId($message['JobId'], $mediaId);
+                event(new VideoFacialAnalysisIsCompleted($message));
+                break;
+            case 'moderation':
+                Recognize::getContentModerationByJobId($message['JobId'], $mediaId);
+                event(new VideoModerationIsCompleted($message));
+                break;
+            case 'ocr':
+                Recognize::getTextDetectionByJobId($message['JobId'], $mediaId);
+                event(new VideoTextAnalysisIsCompleted($message));
+                break;
+            default:
+                throw new \Exception();
         }
     }
 }

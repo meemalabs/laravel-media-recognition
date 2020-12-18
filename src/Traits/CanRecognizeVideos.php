@@ -45,7 +45,7 @@ trait CanRecognizeVideos
     }
 
     /**
-     * Starts the detection of labels/objects in a video.
+     * Starts asynchronous detection of labels/objects in a stored video.
      *
      * @param int $mediaId
      * @param int|null $minConfidence
@@ -53,7 +53,7 @@ trait CanRecognizeVideos
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function startDetectingLabels(int $mediaId, $minConfidence = null, $maxResults = 1000)
+    public function startLabelDetection(int $mediaId, $minConfidence = null, $maxResults = 1000)
     {
         $this->mediaId = $mediaId;
 
@@ -73,24 +73,151 @@ trait CanRecognizeVideos
     /**
      * Starts the detection of faces in a video.
      *
-     * @param int $mediaId
-     * @param array $attributes
+     * @param null $mediaId
+     * @param string $faceAttribute
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function startDetectingFaces($mediaId = null, $attributes = ['DEFAULT'])
+    public function startFaceDetection($mediaId = null, string $faceAttribute = 'DEFAULT')
     {
         $this->mediaId = $mediaId;
 
         $this->setVideoSettings('faces');
-
-        $this->settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
+        $this->settings['FaceAttributes'] = $faceAttribute;
 
         $results = $this->client->startFaceDetection($this->settings);
 
         if ($results['JobId']) {
             $this->updateJobId($results['JobId'], 'faces');
         }
+
+        return $results;
+    }
+
+    /**
+     * Starts asynchronous detection of unsafe content in a stored video.
+     *
+     * @param null $mediaId
+     * @param int|null $minConfidence
+     * @return \Aws\Result
+     * @throws \Exception
+     */
+    public function startContentModeration($mediaId = null, $minConfidence = null)
+    {
+        $this->mediaId = $mediaId;
+
+        $this->setVideoSettings('moderation');
+
+        $this->settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
+
+        $results = $this->client->startContentModeration($this->settings);
+
+        if ($results['JobId']) {
+            $this->updateJobId($results['JobId'], 'faces');
+        }
+
+        return $results;
+    }
+
+    /**
+     * Starts asynchronous detection of text in a stored video.
+     *
+     * @param null $mediaId
+     * @param array|null $filters
+     * @return \Aws\Result
+     * @throws \Exception
+     */
+    public function startTextDetection($mediaId = null, array $filters = null)
+    {
+        $this->mediaId = $mediaId;
+
+        $this->setVideoSettings('ocr');
+
+        if (is_array($filters)) {
+            $this->settings['Filters'] = $filters;
+        }
+
+        $results = $this->client->startTextDetection($this->settings);
+
+        if ($results['JobId']) {
+            $this->updateJobId($results['JobId'], 'ocr');
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get the labels from the video analysis.
+     *
+     * @param string $jobId
+     * @param int $mediaId
+     * @return \Aws\Result
+     * @throws \Exception
+     */
+    public function getLabelsByJobId(string $jobId, int $mediaId)
+    {
+        $results = $this->client->getLabelDetection([
+            'JobId' => $jobId,
+        ]);
+
+        $this->updateVideoResults($results->toArray(),'labels', $mediaId);
+
+        return $results;
+    }
+
+    /**
+     * Get the faces from the video analysis.
+     *
+     * @param string $jobId
+     * @param int $mediaId
+     * @return \Aws\Result
+     * @throws \Exception
+     */
+    public function getFacesByJobId(string $jobId, int $mediaId)
+    {
+        $results = $this->client->getFaceDetection([
+            'JobId' => $jobId,
+        ]);
+
+        $this->updateVideoResults($results->toArray(),'faces', $mediaId);
+
+        return $results;
+    }
+
+    /**
+     * Get the "content moderation" from the video analysis.
+     *
+     * @param string $jobId
+     * @param int $mediaId
+     * @return \Aws\Result
+     * @throws \Exception
+     */
+    public function getContentModerationByJobId(string $jobId, int $mediaId)
+    {
+        $results = $this->client->getContentModeration([
+            'JobId' => $jobId,
+        ]);
+
+        $this->updateVideoResults($results->toArray(),'moderation', $mediaId);
+
+        return $results;
+    }
+
+    /**
+     * Get the faces from a video analysis.
+     *
+     * @param string $jobId
+     * @param int $mediaId
+     * @return \Aws\Result
+     * @throws \Exception
+     */
+    public function getTextDetectionByJobId(string $jobId, int $mediaId)
+    {
+        $results = $this->client->getTextDetection([
+            'JobId' => $jobId,
+        ]);
+
+        $this->updateVideoResults($results->toArray(),'ocr', $mediaId);
 
         return $results;
     }
