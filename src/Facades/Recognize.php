@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Aws\Result detectFaces($mediaId = null, $attributes = ['DEFAULT'])
  * @method static \Aws\Result detectModeration($mediaId = null, $minConfidence = null)
  * @method static \Aws\Result detectText($mediaId = null)
- * @method static \Aws\Result startLabelDetection(int $mediaId, $minConfidence = null, $maxResults = 1000)
+ * @method static \Aws\Result startLabelDetection($mediaId = null, $minConfidence = null, $maxResults = 1000)
  * @method static \Aws\Result startFaceDetection($mediaId = null, string $faceAttribute = 'DEFAULT')
  * @method static \Aws\Result startContentModeration($mediaId = null, int $minConfidence = null)
  * @method static \Aws\Result startTextDetection($mediaId = null, array $filters = null)
