@@ -18,7 +18,28 @@ At the current state, this is a wrapper package for AWS Rekognition with some ex
 use Meema\MediaRecognition\Facades\Recognize;
 
 // run any of the following methods:
-Recognize::path($path);
+// note: any of the query parameters are optional
+// note: make use of $mediaId if you want to create a relationship to your media model
+
+// "image operations" 
+$recognize = Recognize::path('images/persons.jpg');
+$recognize->detectLabels($mediaId = null, $minConfidence = null, $maxLabels = null)
+$recognize->detectFaces($mediaId = null, $attributes = ['DEFAULT'])
+$recognize->detectModeration($mediaId = null, $minConfidence = null)
+$recognize->detectText($mediaId = null)
+
+// "video operations"
+$recognize = Recognize::path('videos/amazing-video.mp4');
+$recognize->startLabelDetection($mediaId = null, $minConfidence = null, $maxResults = 1000)
+$recognize->startFaceDetection($mediaId = null, string $faceAttribute = 'DEFAULT')
+$recognize->startContentModeration($mediaId = null, int $minConfidence = null)
+$recognize->startTextDetection($mediaId = null, array $filters = null)
+
+// get the analysis/status of your jobs
+$recognize->getLabelsByJobId(string $jobId, int $mediaId)
+$recognize->getFacesByJobId(string $jobId, int $mediaId)
+$recognize->getContentModerationByJobId(string $jobId, int $mediaId)
+$recognize->getTextDetectionByJobId(string $jobId, int $mediaId)
 ```
 
 ## Installation
@@ -136,7 +157,7 @@ https://meema-api.sharedwithexpose.com/api/webhooks/media-recognition
 
 #### Confirming Your Subscription
 
-Finally, we need to confirm the subscription which is easily done by navigating to the `MediaConvertJobUpdate` Topic page. There, you should see the following section:
+Finally, we need to confirm the subscription which is easily done by navigating to the `RekognitionUpdate` Topic page. There, you should see the following section:
 
 ![AWS SNS Subscription Confirmation Screenshot](https://i.imgur.com/oTPwNen.png)
 
@@ -147,10 +168,10 @@ Once you are in the Expose dashboard, you need to locate the `SubscribeURL` valu
 ![AWS SNS Subscription Confirmation Screenshot](https://i.imgur.com/ECGIBUY.png)
 
 todo
+
 Lastly, the second & final step of the "Rule creation" prompts you to enter a name and an optional description. You may use any name, e.g. `mediaconvert-job-updates`.
 
-Now, your API will receive webhooks!
-
+Now, your API will receive webhooks as AWS provides updates!
 
 ### Testing
 
