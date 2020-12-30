@@ -167,10 +167,6 @@ Once you are in the Expose dashboard, you need to locate the `SubscribeURL` valu
 
 ![AWS SNS Subscription Confirmation Screenshot](https://i.imgur.com/ECGIBUY.png)
 
-todo
-
-Lastly, the second & final step of the "Rule creation" prompts you to enter a name and an optional description. You may use any name, e.g. `mediaconvert-job-updates`.
-
 Now, your API will receive webhooks as AWS provides updates!
 
 ### Testing
