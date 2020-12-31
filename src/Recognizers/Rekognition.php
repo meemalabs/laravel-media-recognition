@@ -39,6 +39,7 @@ class Rekognition implements MediaRecognitionInterface
      * Construct converter.
      *
      * @param \Aws\Rekognition\RekognitionClient $client
+     * @throws \Exception
      */
     public function __construct(RekognitionClient $client)
     {

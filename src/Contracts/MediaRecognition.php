@@ -5,6 +5,14 @@ namespace Meema\MediaRecognition\Contracts;
 interface MediaRecognition
 {
     /**
+     * Sets the source/path where the file is stored.
+     *
+     * @param string $source
+     * @return $this
+     */
+    public function source(string $source);
+
+    /**
      * Detects labels/objects in an image.
      *
      * @param int|null $mediaId

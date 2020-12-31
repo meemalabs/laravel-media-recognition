@@ -70,6 +70,8 @@ trait CanRecognizeImages
      */
     public function detectLabels($mediaId = null, $minConfidence = null, $maxLabels = null)
     {
+        $this->ensureSourceIsNotNull();
+
         $this->setImageSettings();
 
         $this->settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');

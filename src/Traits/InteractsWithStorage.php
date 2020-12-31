@@ -12,17 +12,16 @@ trait InteractsWithStorage
     protected string $disk;
 
     /**
-     * The path of the file to analyze.
+     * The path to the source of the file to analyze.
      *
      * @var string
      */
-    protected string $path;
+    protected string $source;
 
     /**
      * Set which S3 disk to use.
      *
      * @param string $disk
-     *
      * @return $this
      */
     public function disk(string $disk)
@@ -35,14 +34,26 @@ trait InteractsWithStorage
     /**
      * The equivalent of the S3 Key / the path of the file inside the bucket.
      *
-     * @param string $path
-     *
+     * @param string $source
      * @return $this
      */
-    public function path(string $path)
+    public function source(string $source)
     {
-        $this->path = $path;
+        $this->source = $source;
 
         return $this;
+    }
+
+    /**
+     * Ensures the source/path not to be null if it is null it will thrown an exception.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function ensureSourceIsNotNull()
+    {
+        if (is_null($this->source)) {
+            throw new \Exception('please set a source to run the analysis on');
+        }
     }
 }

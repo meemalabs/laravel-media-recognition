@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static \Aws\Rekognition\RekognitionClient getClient()
+ * @method static \Meema\MediaRecognition\Contracts\MediaRecognition source(string $source)
+ * @method static \Meema\MediaRecognition\Contracts\MediaRecognition path(string $path)
  * @method static \Aws\Result detectLabels($mediaId = null, $minConfidence = null, $maxLabels = null)
  * @method static \Aws\Result detectFaces($mediaId = null, $attributes = ['DEFAULT'])
  * @method static \Aws\Result detectModeration($mediaId = null, $minConfidence = null)
