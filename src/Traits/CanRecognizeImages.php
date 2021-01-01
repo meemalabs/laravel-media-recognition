@@ -36,6 +36,8 @@ trait CanRecognizeImages
      */
     protected function setImageSettings(): void
     {
+        $this->ensureSourceIsNotNull();
+
         if (is_string($this->blob)) {
             $this->settings['Image'] = [
                 'Bytes' => $this->blob,
@@ -54,7 +56,7 @@ trait CanRecognizeImages
         $this->settings['Image'] = [
             'S3Object' => [
                 'Bucket' => $bucketName,
-                'Name' => $this->path,
+                'Name' => $this->source,
             ],
         ];
     }
@@ -70,8 +72,6 @@ trait CanRecognizeImages
      */
     public function detectLabels($mediaId = null, $minConfidence = null, $maxLabels = null)
     {
-        $this->ensureSourceIsNotNull();
-
         $this->setImageSettings();
 
         $this->settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');

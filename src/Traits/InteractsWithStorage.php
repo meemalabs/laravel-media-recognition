@@ -14,9 +14,9 @@ trait InteractsWithStorage
     /**
      * The path to the source of the file to analyze.
      *
-     * @var string
+     * @var string|null
      */
-    protected string $source;
+    protected ?string $source = null;
 
     /**
      * Set which S3 disk to use.
@@ -45,6 +45,17 @@ trait InteractsWithStorage
     }
 
     /**
+     * Alias of source().
+     *
+     * @param string $source
+     * @return $this
+     */
+    public function path(string $source)
+    {
+        return $this->source($source);
+    }
+
+    /**
      * Ensures the source/path not to be null if it is null it will thrown an exception.
      *
      * @return void
@@ -53,7 +64,7 @@ trait InteractsWithStorage
     public function ensureSourceIsNotNull()
     {
         if (is_null($this->source)) {
-            throw new \Exception('please set a source to run the analysis on');
+            throw new \Exception('Please set a $source to run the analysis on');
         }
     }
 }
