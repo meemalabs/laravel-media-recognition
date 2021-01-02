@@ -14,9 +14,16 @@ trait InteractsWithStorage
     /**
      * The path to the source of the file to analyze.
      *
+     * @var string
+     */
+    protected string $source;
+
+    /**
+     * The path to the source of the file to analyze.
+     *
      * @var string|null
      */
-    protected ?string $source = null;
+    protected ?string $mimeType;
 
     /**
      * Set which S3 disk to use.
@@ -35,11 +42,16 @@ trait InteractsWithStorage
      * The equivalent of the S3 Key / the path of the file inside the bucket.
      *
      * @param string $source
+     * @param string|null $mimeType
      * @return $this
      */
-    public function source(string $source)
+    public function source(string $source, $mimeType = null)
     {
         $this->source = $source;
+
+        if ($mimeType) {
+            $this->mimeType = $mimeType;
+        }
 
         return $this;
     }
@@ -48,11 +60,12 @@ trait InteractsWithStorage
      * Alias of source().
      *
      * @param string $source
+     * @param string|null $mimeType
      * @return $this
      */
-    public function path(string $source)
+    public function path(string $source, $mimeType = null)
     {
-        return $this->source($source);
+        return $this->source($source, $mimeType);
     }
 
     /**

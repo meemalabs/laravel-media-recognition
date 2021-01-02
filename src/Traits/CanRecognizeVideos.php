@@ -47,13 +47,13 @@ trait CanRecognizeVideos
     /**
      * Starts asynchronous detection of labels/objects in a stored video.
      *
-     * @param int $mediaId
+     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @param int $maxResults
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function startLabelDetection(int $mediaId, $minConfidence = null, $maxResults = 1000)
+    public function detectVideoLabels($mediaId = null, $minConfidence = null, $maxResults = 1000)
     {
         $this->mediaId = $mediaId;
 
@@ -65,6 +65,28 @@ trait CanRecognizeVideos
 
         if ($results['JobId']) {
             $this->updateJobId($results['JobId'], 'labels');
+        }
+
+        return $results;
+    }
+
+    /**
+     * @param int|null $mediaId
+     * @param array $attributes
+     * @return mixed
+     * @throws \Exception
+     */
+    public function detectVideoFaces($mediaId = null, $attributes = ['DEFAULT'])
+    {
+        $this->mediaId = $mediaId;
+
+        $this->setVideoSettings('faces');
+        $this->settings['FaceAttributes'] = $attributes;
+
+        $results = $this->client->startFaceDetection($this->settings);
+
+        if ($results['JobId']) {
+            $this->updateJobId($results['JobId'], 'faces');
         }
 
         return $results;

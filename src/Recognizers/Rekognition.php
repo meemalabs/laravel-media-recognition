@@ -4,7 +4,11 @@ namespace Meema\MediaRecognition\Recognizers;
 
 use Aws\Rekognition\RekognitionClient;
 use Exception;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Meema\MediaRecognition\Contracts\MediaRecognition as MediaRecognitionInterface;
+use Meema\MediaRecognition\Events\FacialAnalysisCompleted;
+use Meema\MediaRecognition\Facades\Recognize;
 use Meema\MediaRecognition\Models\MediaRecognition;
 use Meema\MediaRecognition\Traits\CanRecognizeImages;
 use Meema\MediaRecognition\Traits\CanRecognizeVideos;
@@ -67,30 +71,23 @@ class Rekognition implements MediaRecognitionInterface
      */
     public function detectLabels($mediaId = null, $minConfidence = null, $maxLabels = null)
     {
-        $this->setImageSettings();
+        $this->ensureMimeTypeIsSet();
 
-        $this->settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
+        if (Str::contains($this->mimeType, 'image')) {
+            $result = $this->detectImageLabels($mediaId, $minConfidence, $maxLabels);
 
-        if (is_int($maxLabels)) {
-            $this->settings['MaxLabels'] = $maxLabels;
+            // we need to manually fire the event for image analyses because unlike the video analysis,
+            // AWS is not sending a webhook upon completion of the image analysis
+            event(new FacialAnalysisCompleted($result));
+
+            return $result;
         }
 
-        $results = $this->client->detectLabels($this->settings);
-
-        if (! config('media-recognition.track_media_recognitions')) {
-            return $results;
+        if (Str::contains($this->mimeType, 'video')) {
+            return $this->detectVideoLabels($mediaId, $minConfidence, $maxLabels);
         }
 
-        if (is_null($mediaId)) {
-            throw new Exception('Please make sure to set a $mediaId.');
-        }
-
-        MediaRecognition::updateOrCreate([
-            'model_id' => $mediaId,
-            'model_type' => config('media-converter.media_model'),
-        ], ['labels' => $results->toArray()]);
-
-        return $results;
+        throw new \Exception('$mimeType does neither indicate being a video nor an image');
     }
 
     /**
@@ -103,15 +100,23 @@ class Rekognition implements MediaRecognitionInterface
      */
     public function detectFaces($mediaId = null, $attributes = ['DEFAULT'])
     {
-        $this->setImageSettings();
+        $this->ensureMimeTypeIsSet();
 
-        $this->settings['Attributes'] = $attributes;
+        if (Str::contains($this->mimeType, 'image')) {
+            $result = $this->detectImageFaces($mediaId, $attributes);
 
-        $results = $this->client->detectFaces($this->settings);
+            // we need to manually fire the event for image analyses because unlike the video analysis,
+            // AWS is not sending a webhook upon completion of the image analysis
+            event(new FacialAnalysisCompleted($result));
 
-        $this->updateOrCreate('faces', $mediaId, $results);
+            return $result;
+        }
 
-        return $results;
+        if (Str::contains($this->mimeType, 'video')) {
+            return $this->detectVideoFaces($mediaId, $attributes);
+        }
+
+        throw new \Exception('$mimeType does neither indicate being a video nor an image');
     }
 
     /**
@@ -216,5 +221,12 @@ class Rekognition implements MediaRecognitionInterface
         $mediaRecognition = MediaRecognition::where('model_id', $mediaId)->firstOrFail();
         $mediaRecognition->$type = $results;
         $mediaRecognition->save();
+    }
+
+    protected function ensureMimeTypeIsSet()
+    {
+        if (is_null($this->mimeType)) {
+            $this->mimeType = Storage::disk(config('media-recognition.disk'))->mimeType($this->path);
+        }
     }
 }

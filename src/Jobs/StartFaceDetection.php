@@ -19,12 +19,13 @@ class StartFaceDetection implements ShouldQueue
     private string $path;
 
     /**
-     * $mediaType may be 'image' or 'video' and it allows us to reduce an HTTP request to check for the mime type.
+     * $mimeType may be 'image', 'video' or the actual mime type of the file.
+     * It allows us to reduce an HTTP request to check for the mime type.
      * If not assigned, it will check the mime type for whether it is an image or a video source.
      *
      * @var string|null
      */
-    private ?string $mediaType;
+    private ?string $mimeType;
 
     private ?int $mediaId;
 
@@ -34,16 +35,16 @@ class StartFaceDetection implements ShouldQueue
      * Create a new job instance.
      *
      * @param string $path
-     * @param string|null $mediaType
+     * @param string|null $mimeType
      * @param int|null $mediaId
      * @param string $faceAttribute
      */
-    public function __construct(string $path, $mediaType = null, $mediaId = null, $faceAttribute = 'DEFAULT')
+    public function __construct(string $path, $mimeType = null, $mediaId = null, $faceAttribute = 'DEFAULT')
     {
         $this->path = $path;
+        $this->mimeType = $mimeType;
         $this->mediaId = $mediaId;
         $this->faceAttribute = [$faceAttribute];
-        $this->mediaType = $mediaType;
     }
 
     /**
@@ -54,27 +55,31 @@ class StartFaceDetection implements ShouldQueue
      */
     public function handle()
     {
-        if (is_null($this->mediaType)) {
-            $mimeType = Storage::disk(config('media-recognition.disk'))->mimeType($this->path);
-        } else {
-            $mimeType = $this->mediaType;
-        }
+        $this->ensureMimeTypeIsSet();
 
-        if (Str::contains($mimeType, 'image')) {
-            $result = Recognize::source($this->path)->detectFaces($this->mediaId, $this->faceAttribute);
+        if (Str::contains($this->mimeType, 'image')) {
+            $result = Recognize::source($this->path, $this->mimeType)->detectImageFaces($this->mediaId, $this->faceAttribute);
 
-            // we need to manually fire the event for image analyses because unlike the video analysis, AWS is not sending a webhook upon completion
+            // we need to manually fire the event for image analyses because unlike the video analysis,
+            // AWS is not sending a webhook upon completion of the image analysis
             event(new FacialAnalysisCompleted($result));
 
             return;
         }
 
-        if (Str::contains($mimeType, 'video')) {
-            Recognize::source($this->path)->detectFaces($this->mediaId, $this->faceAttribute);
+        if (Str::contains($this->mimeType, 'video')) {
+            Recognize::source($this->path, $this->mimeType)->detectVideoFaces($this->mediaId, $this->faceAttribute);
 
             return;
         }
 
         throw new \Exception('$mimeType does neither indicate being a video nor an image');
+    }
+
+    protected function ensureMimeTypeIsSet()
+    {
+        if (is_null($this->mimeType)) {
+            $this->mimeType = Storage::disk(config('media-recognition.disk'))->mimeType($this->path);
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace Meema\MediaRecognition\Traits;
 
 use Exception;
+use Meema\MediaRecognition\Models\MediaRecognition;
 
 trait CanRecognizeImages
 {
@@ -58,5 +59,48 @@ trait CanRecognizeImages
                 'Name' => $this->source,
             ],
         ];
+    }
+
+    /**
+     * @param $mediaId
+     * @param null $minConfidence
+     * @param null $maxLabels
+     * @return mixed
+     * @throws \Exception
+     */
+    public function detectImageLabels($mediaId, $minConfidence = null, $maxLabels = null)
+    {
+        $this->setImageSettings();
+
+        $this->settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
+
+        if (is_int($maxLabels)) {
+            $this->settings['MaxLabels'] = $maxLabels;
+        }
+
+        $results = $this->client->detectLabels($this->settings);
+
+        $this->updateOrCreate('labels', $mediaId, $results);
+
+        return $results;
+    }
+
+    /**
+     * @param int|null $mediaId
+     * @param array $attributes
+     * @return mixed
+     * @throws \Exception
+     */
+    public function detectImageFaces($mediaId = null, $attributes = ['DEFAULT'])
+    {
+        $this->setImageSettings();
+
+        $this->settings['Attributes'] = $attributes;
+
+        $results = $this->client->detectFaces($this->settings);
+
+        $this->updateOrCreate('faces', $mediaId, $results);
+
+        return $results;
     }
 }

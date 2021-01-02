@@ -32,6 +32,28 @@ interface MediaRecognition
     public function detectLabels($mediaId = null, $minConfidence = null, $maxLabels = null);
 
     /**
+     * Detects labels/objects in an image.
+     *
+     * @param int|null $mediaId
+     * @param int|null $minConfidence
+     * @param int|null $maxLabels
+     * @return mixed
+     * @throws \Exception
+     */
+    public function detectImageLabels($mediaId = null, $minConfidence = null, $maxLabels = null);
+
+    /**
+     * Detects labels/objects in a video.
+     *
+     * @param int|null $mediaId
+     * @param int|null $minConfidence
+     * @param int|null $maxLabels
+     * @return mixed
+     * @throws \Exception
+     */
+    public function detectVideoLabels($mediaId = null, $minConfidence = null, $maxLabels = null);
+
+    /**
      * Detects faces in an image & analyzes them.
      *
      * @param int|null $mediaId
