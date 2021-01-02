@@ -10,7 +10,6 @@ use Meema\MediaRecognition\Contracts\MediaRecognition as MediaRecognitionInterfa
 use Meema\MediaRecognition\Events\FacialAnalysisCompleted;
 use Meema\MediaRecognition\Events\ModerationAnalysisCompleted;
 use Meema\MediaRecognition\Events\TextAnalysisCompleted;
-use Meema\MediaRecognition\Facades\Recognize;
 use Meema\MediaRecognition\Models\MediaRecognition;
 use Meema\MediaRecognition\Traits\CanRecognizeImages;
 use Meema\MediaRecognition\Traits\CanRecognizeVideos;
