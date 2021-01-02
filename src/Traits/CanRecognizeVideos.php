@@ -25,7 +25,7 @@ trait CanRecognizeVideos
         $this->settings['Video'] = [
             'S3Object' => [
                 'Bucket' => $bucketName,
-                'Name' => $this->path,
+                'Name' => $this->source,
             ],
         ];
 

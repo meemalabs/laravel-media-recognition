@@ -4,10 +4,10 @@ namespace Meema\MediaRecognition\Http\Controllers;
 
 use Aws\Sns\Message;
 use Illuminate\Routing\Controller;
-use Meema\MediaRecognition\Events\VideoFacialAnalysisCompleted;
-use Meema\MediaRecognition\Events\VideoLabelAnalysisCompleted;
-use Meema\MediaRecognition\Events\VideoModerationAnalysisCompleted;
-use Meema\MediaRecognition\Events\VideoTextAnalysisCompleted;
+use Meema\MediaRecognition\Events\FacialAnalysisCompleted;
+use Meema\MediaRecognition\Events\LabelAnalysisCompleted;
+use Meema\MediaRecognition\Events\ModerationAnalysisCompleted;
+use Meema\MediaRecognition\Events\TextAnalysisCompleted;
 use Meema\MediaRecognition\Facades\Recognize;
 
 class IncomingWebhookController extends Controller
@@ -50,19 +50,19 @@ class IncomingWebhookController extends Controller
         switch ($type) {
             case 'labels':
                 Recognize::getLabelsByJobId($message['JobId'], $mediaId);
-                event(new VideoLabelAnalysisCompleted($message));
+                event(new LabelAnalysisCompleted($message));
                 break;
             case 'faces':
                 Recognize::getFacesByJobId($message['JobId'], $mediaId);
-                event(new VideoFacialAnalysisCompleted($message));
+                event(new FacialAnalysisCompleted($message));
                 break;
             case 'moderation':
                 Recognize::getContentModerationByJobId($message['JobId'], $mediaId);
-                event(new VideoModerationAnalysisCompleted($message));
+                event(new ModerationAnalysisCompleted($message));
                 break;
             case 'ocr':
                 Recognize::getTextDetectionByJobId($message['JobId'], $mediaId);
-                event(new VideoTextAnalysisCompleted($message));
+                event(new TextAnalysisCompleted($message));
                 break;
             default:
                 throw new \Exception();

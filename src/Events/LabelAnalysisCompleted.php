@@ -6,7 +6,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class VideoTextAnalysisCompleted
+class LabelAnalysisCompleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

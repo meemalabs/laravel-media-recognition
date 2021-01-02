@@ -9,33 +9,42 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Meema\MediaRecognition\Facades\Recognize;
 
-class StartVideoModerationDetection implements ShouldQueue
+class StartLabelDetection implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    private string $path;
 
     private ?int $mediaId;
 
     private ?int $minConfidence;
 
+    private int $maxResults;
+
     /**
      * Create a new job instance.
      *
+     * @param string $path
      * @param int|null $mediaId
      * @param int|null $minConfidence
+     * @param int $maxResults
      */
-    public function __construct($mediaId = null, $minConfidence = null)
+    public function __construct(string $path, $mediaId = null, $minConfidence = null, $maxResults = 1000)
     {
+        $this->path = $path;
         $this->mediaId = $mediaId;
         $this->minConfidence = $minConfidence;
+        $this->maxResults = $maxResults;
     }
 
     /**
      * Execute the job.
      *
      * @return void
+     * @throws \Exception
      */
     public function handle()
     {
-        Recognize::startContentModeration($this->mediaId, $this->minConfidence);
+        Recognize::source($this->path)->detectLabels($this->mediaId, $this->minConfidence, $this->maxResults);
     }
 }

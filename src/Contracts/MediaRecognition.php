@@ -13,6 +13,14 @@ interface MediaRecognition
     public function source(string $source);
 
     /**
+     * Sets the source/path where the file is stored.
+     *
+     * @param string $path
+     * @return $this
+     */
+    public function path(string $path);
+
+    /**
      * Detects labels/objects in an image.
      *
      * @param int|null $mediaId

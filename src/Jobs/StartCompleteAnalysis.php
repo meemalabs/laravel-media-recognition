@@ -9,24 +9,24 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Meema\MediaRecognition\Facades\Recognize;
 
-class StartVideoFaceDetection implements ShouldQueue
+class StartCompleteAnalysis implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private ?int $mediaId;
 
-    private string $faceAttribute;
+    private array $filters;
 
     /**
      * Create a new job instance.
      *
      * @param int|null $mediaId
-     * @param string $faceAttribute
+     * @param array $filters
      */
-    public function __construct($mediaId = null, $faceAttribute = 'DEFAULT')
+    public function __construct($mediaId = null, $filters = [])
     {
         $this->mediaId = $mediaId;
-        $this->faceAttribute = $faceAttribute;
+        $this->filters = $filters;
     }
 
     /**
@@ -36,6 +36,6 @@ class StartVideoFaceDetection implements ShouldQueue
      */
     public function handle()
     {
-        Recognize::startFaceDetection($this->mediaId, $this->faceAttribute);
+        Recognize::startTextDetection($this->mediaId, $this->filters);
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class VideoModerationAnalysisCompleted
+class FacialAnalysisCompleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

@@ -9,9 +9,11 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Meema\MediaRecognition\Facades\Recognize;
 
-class StartVideoTextDetection implements ShouldQueue
+class StartTextDetection implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    private string $path;
 
     private ?int $mediaId;
 
@@ -20,11 +22,13 @@ class StartVideoTextDetection implements ShouldQueue
     /**
      * Create a new job instance.
      *
+     * @param string $path
      * @param int|null $mediaId
      * @param array $filters
      */
-    public function __construct($mediaId = null, $filters = [])
+    public function __construct(string $path, $mediaId = null, $filters = [])
     {
+        $this->path = $path;
         $this->mediaId = $mediaId;
         $this->filters = $filters;
     }
@@ -33,9 +37,10 @@ class StartVideoTextDetection implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     * @throws \Exception
      */
     public function handle()
     {
-        Recognize::startTextDetection($this->mediaId, $this->filters);
+        Recognize::source($this->path)->detectText($this->mediaId, $this->filters);
     }
 }
