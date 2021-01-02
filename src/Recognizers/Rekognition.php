@@ -154,15 +154,16 @@ class Rekognition implements MediaRecognitionInterface
      * Detects text in an image (OCR).
      *
      * @param int|null $mediaId
+     * @param array|null $filters
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function detectText($mediaId = null)
+    public function detectText($mediaId = null, array $filters = null)
     {
         $this->ensureMimeTypeIsSet();
 
         if (Str::contains($this->mimeType, 'image')) {
-            $result = $this->detectImageText($mediaId);
+            $result = $this->detectImageText($mediaId, $filters);
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
@@ -172,7 +173,7 @@ class Rekognition implements MediaRecognitionInterface
         }
 
         if (Str::contains($this->mimeType, 'video')) {
-            return $this->detectVideoText($mediaId);
+            return $this->detectVideoText($mediaId, $filters);
         }
 
         throw new \Exception('$mimeType does neither indicate being a video nor an image');

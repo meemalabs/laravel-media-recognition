@@ -61,13 +61,13 @@ trait CanRecognizeImages
     }
 
     /**
-     * @param $mediaId
+     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @param null $maxLabels
      * @return mixed
      * @throws \Exception
      */
-    public function detectImageLabels($mediaId, $minConfidence = null, $maxLabels = null)
+    public function detectImageLabels($mediaId = null, $minConfidence = null, $maxLabels = null)
     {
         $this->setImageSettings();
 
