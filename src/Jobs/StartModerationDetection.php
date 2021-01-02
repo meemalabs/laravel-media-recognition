@@ -76,7 +76,6 @@ class StartModerationDetection implements ShouldQueue
         throw new \Exception('$mimeType does neither indicate being a video nor an image');
     }
 
-
     protected function ensureMimeTypeIsSet()
     {
         if (is_null($this->mimeType)) {
