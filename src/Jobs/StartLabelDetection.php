@@ -9,7 +9,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Meema\MediaRecognition\Events\FacialAnalysisCompleted;
 use Meema\MediaRecognition\Events\LabelAnalysisCompleted;
 use Meema\MediaRecognition\Facades\Recognize;
 
@@ -80,7 +79,6 @@ class StartLabelDetection implements ShouldQueue
 
         throw new \Exception('$mimeType does neither indicate being a video nor an image');
     }
-
 
     protected function ensureMimeTypeIsSet()
     {

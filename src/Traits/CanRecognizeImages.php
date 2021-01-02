@@ -3,7 +3,6 @@
 namespace Meema\MediaRecognition\Traits;
 
 use Exception;
-use Meema\MediaRecognition\Models\MediaRecognition;
 
 trait CanRecognizeImages
 {
