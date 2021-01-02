@@ -63,7 +63,7 @@ trait CanRecognizeImages
 
     /**
      * @param $mediaId
-     * @param null $minConfidence
+     * @param int|null $minConfidence
      * @param null $maxLabels
      * @return mixed
      * @throws \Exception
@@ -100,6 +100,46 @@ trait CanRecognizeImages
         $results = $this->client->detectFaces($this->settings);
 
         $this->updateOrCreate('faces', $mediaId, $results);
+
+        return $results;
+    }
+
+    /**
+     * @param int|null $mediaId
+     * @param int|null $minConfidence
+     * @return mixed
+     * @throws \Exception
+     */
+    public function detectImageModeration($mediaId = null, $minConfidence = null)
+    {
+        $this->setImageSettings();
+
+        $this->settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
+
+        $results = $this->client->detectModerationLabels($this->settings);
+
+        $this->updateOrCreate('moderation', $mediaId, $results);
+
+        return $results;
+    }
+
+    /**
+     * @param int|null $mediaId
+     * @param array|null $filters
+     * @return mixed
+     * @throws \Exception
+     */
+    public function detectImageText($mediaId = null, array $filters = null)
+    {
+        $this->setImageSettings();
+
+        if (is_array($filters)) {
+            $this->settings['Filters'] = $filters;
+        }
+
+        $results = $this->client->detectText($this->settings);
+
+        $this->updateOrCreate('ocr', $mediaId, $results);
 
         return $results;
     }

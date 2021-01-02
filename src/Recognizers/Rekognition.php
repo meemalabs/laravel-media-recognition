@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Meema\MediaRecognition\Contracts\MediaRecognition as MediaRecognitionInterface;
 use Meema\MediaRecognition\Events\FacialAnalysisCompleted;
+use Meema\MediaRecognition\Events\ModerationAnalysisCompleted;
+use Meema\MediaRecognition\Events\TextAnalysisCompleted;
 use Meema\MediaRecognition\Facades\Recognize;
 use Meema\MediaRecognition\Models\MediaRecognition;
 use Meema\MediaRecognition\Traits\CanRecognizeImages;
@@ -130,15 +132,23 @@ class Rekognition implements MediaRecognitionInterface
      */
     public function detectModeration($mediaId = null, $minConfidence = null)
     {
-        $this->setImageSettings();
+        $this->ensureMimeTypeIsSet();
 
-        $this->settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
+        if (Str::contains($this->mimeType, 'image')) {
+            $result = $this->detectImageModeration($mediaId, $minConfidence);
 
-        $results = $this->client->detectModerationLabels($this->settings);
+            // we need to manually fire the event for image analyses because unlike the video analysis,
+            // AWS is not sending a webhook upon completion of the image analysis
+            event(new ModerationAnalysisCompleted($result));
 
-        $this->updateOrCreate('moderation', $mediaId, $results);
+            return $result;
+        }
 
-        return $results;
+        if (Str::contains($this->mimeType, 'video')) {
+            return $this->detectVideoModeration($mediaId, $minConfidence);
+        }
+
+        throw new \Exception('$mimeType does neither indicate being a video nor an image');
     }
 
     /**
@@ -150,13 +160,23 @@ class Rekognition implements MediaRecognitionInterface
      */
     public function detectText($mediaId = null)
     {
-        $this->setImageSettings();
+        $this->ensureMimeTypeIsSet();
 
-        $results = $this->client->detectText($this->settings);
+        if (Str::contains($this->mimeType, 'image')) {
+            $result = $this->detectImageText($mediaId);
 
-        $this->updateOrCreate('ocr', $mediaId, $results);
+            // we need to manually fire the event for image analyses because unlike the video analysis,
+            // AWS is not sending a webhook upon completion of the image analysis
+            event(new TextAnalysisCompleted($result));
 
-        return $results;
+            return $result;
+        }
+
+        if (Str::contains($this->mimeType, 'video')) {
+            return $this->detectVideoText($mediaId);
+        }
+
+        throw new \Exception('$mimeType does neither indicate being a video nor an image');
     }
 
     /**

@@ -81,31 +81,8 @@ trait CanRecognizeVideos
         $this->mediaId = $mediaId;
 
         $this->setVideoSettings('faces');
+
         $this->settings['FaceAttributes'] = $attributes;
-
-        $results = $this->client->startFaceDetection($this->settings);
-
-        if ($results['JobId']) {
-            $this->updateJobId($results['JobId'], 'faces');
-        }
-
-        return $results;
-    }
-
-    /**
-     * Starts the detection of faces in a video.
-     *
-     * @param null $mediaId
-     * @param string $faceAttribute
-     * @return \Aws\Result
-     * @throws \Exception
-     */
-    public function startFaceDetection($mediaId = null, string $faceAttribute = 'DEFAULT')
-    {
-        $this->mediaId = $mediaId;
-
-        $this->setVideoSettings('faces');
-        $this->settings['FaceAttributes'] = $faceAttribute;
 
         $results = $this->client->startFaceDetection($this->settings);
 
@@ -119,12 +96,12 @@ trait CanRecognizeVideos
     /**
      * Starts asynchronous detection of unsafe content in a stored video.
      *
-     * @param null $mediaId
+     * @param int|null $mediaId
      * @param int|null $minConfidence
-     * @return \Aws\Result
+     * @return mixed
      * @throws \Exception
      */
-    public function startContentModeration($mediaId = null, $minConfidence = null)
+    public function detectVideoModeration($mediaId = null, $minConfidence = null)
     {
         $this->mediaId = $mediaId;
 
@@ -144,12 +121,12 @@ trait CanRecognizeVideos
     /**
      * Starts asynchronous detection of text in a stored video.
      *
-     * @param null $mediaId
+     * @param int|null $mediaId
      * @param array|null $filters
-     * @return \Aws\Result
+     * @return mixed
      * @throws \Exception
      */
-    public function startTextDetection($mediaId = null, array $filters = null)
+    public function detectVideoText($mediaId = null, array $filters = null)
     {
         $this->mediaId = $mediaId;
 

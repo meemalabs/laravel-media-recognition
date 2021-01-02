@@ -30,7 +30,7 @@ class StartLabelDetection implements ShouldQueue
 
     private ?int $mediaId;
 
-    private ?int $minConfidence;
+    private mixed $minConfidence;
 
     private int $maxResults;
 
