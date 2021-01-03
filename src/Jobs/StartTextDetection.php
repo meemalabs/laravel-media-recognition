@@ -9,7 +9,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Meema\MediaRecognition\Events\LabelAnalysisCompleted;
 use Meema\MediaRecognition\Events\TextAnalysisCompleted;
 use Meema\MediaRecognition\Facades\Recognize;
 
