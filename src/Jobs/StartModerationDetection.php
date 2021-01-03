@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Meema\MediaRecognition\Events\LabelAnalysisCompleted;
+use Meema\MediaRecognition\Events\ModerationAnalysisCompleted;
 use Meema\MediaRecognition\Facades\Recognize;
 
 class StartModerationDetection implements ShouldQueue
@@ -62,7 +63,7 @@ class StartModerationDetection implements ShouldQueue
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
-            event(new LabelAnalysisCompleted($result));
+            event(new ModerationAnalysisCompleted($result));
 
             return;
         }
