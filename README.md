@@ -122,6 +122,26 @@ return [
 ];
 ```
 
+## Preparing Your Media Model (optional)
+
+This package includes a trait for your "Media model" that you may use to define the relationship of your media model with the tracked recognitions.
+
+Simply use it as follows:
+
+```php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Meema\MediaRecognition\Traits\Recognizable;
+
+class Media extends Model
+{
+    use Recognizable; 
+    
+    // ...
+}
+```
+
 ### Set Up Webhooks (optional)
 
 This package makes use of webhooks in order to communicate the updates of the AWS Rekognition job. Please follow the following steps to enable webhooks for yourself.
