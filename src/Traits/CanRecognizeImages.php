@@ -61,13 +61,12 @@ trait CanRecognizeImages
     }
 
     /**
-     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @param null $maxLabels
      * @return mixed
      * @throws \Exception
      */
-    public function detectImageLabels($mediaId = null, $minConfidence = null, $maxLabels = null)
+    public function detectImageLabels($minConfidence = null, $maxLabels = null)
     {
         $this->setImageSettings();
 
@@ -83,22 +82,21 @@ trait CanRecognizeImages
             return $results;
         }
 
-        if (is_null($mediaId)) {
+        if (is_null($this->mediaId)) {
             throw new Exception('Please make sure to set a $mediaId.');
         }
 
-        $this->updateOrCreate('labels', $mediaId, $results);
+        $this->updateOrCreate('labels', $results);
 
         return $results;
     }
 
     /**
-     * @param int|null $mediaId
      * @param array $attributes
      * @return mixed
      * @throws \Exception
      */
-    public function detectImageFaces($mediaId = null, $attributes = ['DEFAULT'])
+    public function detectImageFaces($attributes = ['DEFAULT'])
     {
         $this->setImageSettings();
 
@@ -110,22 +108,21 @@ trait CanRecognizeImages
             return $results;
         }
 
-        if (is_null($mediaId)) {
+        if (is_null($this->mediaId)) {
             throw new Exception('Please make sure to set a $mediaId.');
         }
 
-        $this->updateOrCreate('faces', $mediaId, $results);
+        $this->updateOrCreate('faces', $results);
 
         return $results;
     }
 
     /**
-     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @return mixed
      * @throws \Exception
      */
-    public function detectImageModeration($mediaId = null, $minConfidence = null)
+    public function detectImageModeration($minConfidence = null)
     {
         $this->setImageSettings();
 
@@ -137,22 +134,21 @@ trait CanRecognizeImages
             return $results;
         }
 
-        if (is_null($mediaId)) {
+        if (is_null($this->mediaId)) {
             throw new Exception('Please make sure to set a $mediaId.');
         }
 
-        $this->updateOrCreate('moderation', $mediaId, $results);
+        $this->updateOrCreate('moderation', $results);
 
         return $results;
     }
 
     /**
-     * @param int|null $mediaId
      * @param array|null $filters
      * @return mixed
      * @throws \Exception
      */
-    public function detectImageText($mediaId = null, array $filters = null)
+    public function detectImageText(array $filters = null)
     {
         $this->setImageSettings();
 
@@ -166,11 +162,11 @@ trait CanRecognizeImages
             return $results;
         }
 
-        if (is_null($mediaId)) {
+        if (is_null($this->mediaId)) {
             throw new Exception('Please make sure to set a $mediaId.');
         }
 
-        $this->updateOrCreate('ocr', $mediaId, $results);
+        $this->updateOrCreate('ocr', $results);
 
         return $results;
     }

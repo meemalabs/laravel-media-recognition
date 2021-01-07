@@ -170,15 +170,14 @@ class Rekognition implements MediaRecognitionInterface
 
     /**
      * @param $type
-     * @param $mediaId
      * @param $results
      * @return mixed
      * @throws \Exception
      */
-    protected function updateOrCreate($type, $mediaId, $results)
+    protected function updateOrCreate($type, $results)
     {
         MediaRecognition::updateOrCreate([
-            'model_id' => $mediaId,
+            'model_id' => $this->mediaId,
             'model_type' => config('media-converter.media_model'),
         ], [$type => $results->toArray()]);
 
