@@ -58,7 +58,7 @@ class StartFaceDetection implements ShouldQueue
         $this->ensureMimeTypeIsSet();
 
         if (Str::contains($this->mimeType, 'image')) {
-            $result = Recognize::source($this->path, $this->mimeType)->detectImageFaces($this->mediaId, $this->faceAttribute);
+            $result = Recognize::source($this->path, $this->mimeType, $this->mediaId)->detectImageFaces($this->faceAttribute);
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
@@ -68,7 +68,7 @@ class StartFaceDetection implements ShouldQueue
         }
 
         if (Str::contains($this->mimeType, 'video')) {
-            Recognize::source($this->path, $this->mimeType)->detectVideoFaces($this->mediaId, $this->faceAttribute);
+            Recognize::source($this->path, $this->mimeType, $this->mediaId)->detectVideoFaces($this->faceAttribute);
 
             return;
         }

@@ -62,7 +62,7 @@ class StartLabelDetection implements ShouldQueue
         $this->ensureMimeTypeIsSet();
 
         if (Str::contains($this->mimeType, 'image')) {
-            $result = Recognize::source($this->path, $this->mimeType)->detectImageLabels($this->mediaId, $this->minConfidence, $this->maxResults);
+            $result = Recognize::source($this->path, $this->mimeType, $this->mediaId)->detectImageLabels($this->minConfidence, $this->maxResults);
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
@@ -72,7 +72,7 @@ class StartLabelDetection implements ShouldQueue
         }
 
         if (Str::contains($this->mimeType, 'video')) {
-            Recognize::source($this->path, $this->mimeType)->detectVideoLabels($this->mediaId, $this->minConfidence, $this->maxResults);
+            Recognize::source($this->path, $this->mimeType, $this->mediaId)->detectVideoLabels($this->minConfidence, $this->maxResults);
 
             return;
         }

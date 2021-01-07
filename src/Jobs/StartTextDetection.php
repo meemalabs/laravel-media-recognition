@@ -58,7 +58,7 @@ class StartTextDetection implements ShouldQueue
         $this->ensureMimeTypeIsSet();
 
         if (Str::contains($this->mimeType, 'image')) {
-            $result = Recognize::source($this->path, $this->mimeType)->detectText($this->mediaId, $this->filters);
+            $result = Recognize::source($this->path, $this->mimeType, $this->mediaId)->detectText($this->filters);
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
@@ -68,7 +68,7 @@ class StartTextDetection implements ShouldQueue
         }
 
         if (Str::contains($this->mimeType, 'video')) {
-            Recognize::source($this->path, $this->mimeType)->detectText($this->mediaId, $this->filters);
+            Recognize::source($this->path, $this->mimeType, $this->mediaId)->detectText($this->filters);
 
             return;
         }
