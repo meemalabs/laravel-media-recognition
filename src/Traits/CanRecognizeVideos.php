@@ -47,16 +47,13 @@ trait CanRecognizeVideos
     /**
      * Starts asynchronous detection of labels/objects in a stored video.
      *
-     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @param int $maxResults
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function detectVideoLabels($mediaId = null, $minConfidence = null, $maxResults = 1000)
+    public function detectVideoLabels($minConfidence = null, $maxResults = 1000)
     {
-        $this->mediaId = $mediaId;
-
         $this->setVideoSettings('labels');
         $this->settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
         $this->settings['MaxResults'] = $maxResults;
@@ -71,15 +68,12 @@ trait CanRecognizeVideos
     }
 
     /**
-     * @param int|null $mediaId
      * @param array $attributes
      * @return mixed
      * @throws \Exception
      */
-    public function detectVideoFaces($mediaId = null, $attributes = ['DEFAULT'])
+    public function detectVideoFaces($attributes = ['DEFAULT'])
     {
-        $this->mediaId = $mediaId;
-
         $this->setVideoSettings('faces');
 
         $this->settings['FaceAttributes'] = $attributes;
@@ -96,15 +90,12 @@ trait CanRecognizeVideos
     /**
      * Starts asynchronous detection of unsafe content in a stored video.
      *
-     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @return mixed
      * @throws \Exception
      */
-    public function detectVideoModeration($mediaId = null, $minConfidence = null)
+    public function detectVideoModeration($minConfidence = null)
     {
-        $this->mediaId = $mediaId;
-
         $this->setVideoSettings('moderation');
 
         $this->settings['MinConfidence'] = $minConfidence ?? config('media-recognition.min_confidence');
@@ -121,15 +112,12 @@ trait CanRecognizeVideos
     /**
      * Starts asynchronous detection of text in a stored video.
      *
-     * @param int|null $mediaId
      * @param array|null $filters
      * @return mixed
      * @throws \Exception
      */
-    public function detectVideoText($mediaId = null, array $filters = null)
+    public function detectVideoText(array $filters = null)
     {
-        $this->mediaId = $mediaId;
-
         $this->setVideoSettings('ocr');
 
         if (is_array($filters)) {
@@ -149,15 +137,23 @@ trait CanRecognizeVideos
      * Get the labels from the video analysis.
      *
      * @param string $jobId
-     * @param int $mediaId
+     * @param int|null $mediaId
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function getLabelsByJobId(string $jobId, int $mediaId)
+    public function getLabelsByJobId(string $jobId, int $mediaId = null)
     {
         $results = $this->client->getLabelDetection([
             'JobId' => $jobId,
         ]);
+
+        if (! config('media-recognition.track_media_recognitions')) {
+            return $results;
+        }
+
+        if (is_null($mediaId)) {
+            throw new Exception('Please make sure to set a $mediaId.');
+        }
 
         $this->updateVideoResults($results->toArray(), 'labels', $mediaId);
 
@@ -168,15 +164,23 @@ trait CanRecognizeVideos
      * Get the faces from the video analysis.
      *
      * @param string $jobId
-     * @param int $mediaId
+     * @param int|null $mediaId
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function getFacesByJobId(string $jobId, int $mediaId)
+    public function getFacesByJobId(string $jobId, int $mediaId = null)
     {
         $results = $this->client->getFaceDetection([
             'JobId' => $jobId,
         ]);
+
+        if (! config('media-recognition.track_media_recognitions')) {
+            return $results;
+        }
+
+        if (is_null($mediaId)) {
+            throw new Exception('Please make sure to set a $mediaId.');
+        }
 
         $this->updateVideoResults($results->toArray(), 'faces', $mediaId);
 
@@ -187,15 +191,23 @@ trait CanRecognizeVideos
      * Get the "content moderation" from the video analysis.
      *
      * @param string $jobId
-     * @param int $mediaId
+     * @param int|null $mediaId
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function getContentModerationByJobId(string $jobId, int $mediaId)
+    public function getContentModerationByJobId(string $jobId, int $mediaId = null)
     {
         $results = $this->client->getContentModeration([
             'JobId' => $jobId,
         ]);
+
+        if (! config('media-recognition.track_media_recognitions')) {
+            return $results;
+        }
+
+        if (is_null($mediaId)) {
+            throw new Exception('Please make sure to set a $mediaId.');
+        }
 
         $this->updateVideoResults($results->toArray(), 'moderation', $mediaId);
 
@@ -206,15 +218,23 @@ trait CanRecognizeVideos
      * Get the faces from a video analysis.
      *
      * @param string $jobId
-     * @param int $mediaId
+     * @param int|null $mediaId
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function getTextDetectionByJobId(string $jobId, int $mediaId)
+    public function getTextDetectionByJobId(string $jobId, int $mediaId = null)
     {
         $results = $this->client->getTextDetection([
             'JobId' => $jobId,
         ]);
+
+        if (! config('media-recognition.track_media_recognitions')) {
+            return $results;
+        }
+
+        if (is_null($mediaId)) {
+            throw new Exception('Please make sure to set a $mediaId.');
+        }
 
         $this->updateVideoResults($results->toArray(), 'ocr', $mediaId);
 

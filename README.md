@@ -22,24 +22,26 @@ use Meema\MediaRecognition\Facades\Recognize;
 // note: make use of $mediaId if you want to create a relationship to your media model
 
 // "image operations" 
+$mediaId = 1; // if you want to track this "recognition" and relate it to a media model
 $recognize = Recognize::path('images/persons.jpg');
-$recognize->detectLabels($mediaId = null, $minConfidence = null, $maxLabels = null)
-$recognize->detectFaces($mediaId = null, $attributes = ['DEFAULT'])
-$recognize->detectModeration($mediaId = null, $minConfidence = null)
-$recognize->detectText($mediaId = null)
+$recognize->detectLabels($minConfidence = null, $maxLabels = null)
+$recognize->detectFaces($attributes = ['DEFAULT'])
+$recognize->detectModeration($minConfidence = null)
+$recognize->detectText()
 
 // "video operations"
-$recognize = Recognize::path('videos/amazing-video.mp4');
-$recognize->startLabelDetection($mediaId = null, $minConfidence = null, $maxResults = 1000)
-$recognize->startFaceDetection($mediaId = null, string $faceAttribute = 'DEFAULT')
-$recognize->startContentModeration($mediaId = null, int $minConfidence = null)
-$recognize->startTextDetection($mediaId = null, array $filters = null)
+$mediaId = 1; // if you want to track this "recognition" and relate it to a media model
+$recognize = Recognize::path('videos/amazing-video.mp4', 'video/mp4', $mediaId);
+$recognize->startLabelDetection($minConfidence = null, $maxResults = 1000)
+$recognize->startFaceDetection(string $faceAttribute = 'DEFAULT')
+$recognize->startContentModeration(int $minConfidence = null)
+$recognize->startTextDetection(array $filters = null)
 
 // get the analysis/status of your jobs
-$recognize->getLabelsByJobId(string $jobId, int $mediaId)
-$recognize->getFacesByJobId(string $jobId, int $mediaId)
-$recognize->getContentModerationByJobId(string $jobId, int $mediaId)
-$recognize->getTextDetectionByJobId(string $jobId, int $mediaId)
+$recognize->getLabelsByJobId(string $jobId)
+$recognize->getFacesByJobId(string $jobId)
+$recognize->getContentModerationByJobId(string $jobId)
+$recognize->getTextDetectionByJobId(string $jobId)
 ```
 
 ## Installation
@@ -136,7 +138,7 @@ use Meema\MediaRecognition\Traits\Recognizable;
 
 class Media extends Model
 {
-    use Recognizable; 
+    use Recognizable;
     
     // ...
 }

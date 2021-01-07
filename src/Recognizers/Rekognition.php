@@ -34,13 +34,6 @@ class Rekognition implements MediaRecognitionInterface
     protected array $settings;
 
     /**
-     * The relating media model's id.
-     *
-     * @var int|null
-     */
-    protected ?int $mediaId = null;
-
-    /**
      * Construct converter.
      *
      * @param \Aws\Rekognition\RekognitionClient $client
@@ -64,18 +57,17 @@ class Rekognition implements MediaRecognitionInterface
     /**
      * Detects labels/objects in an image.
      *
-     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @param int|null $maxLabels
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function detectLabels($mediaId = null, $minConfidence = null, $maxLabels = null)
+    public function detectLabels($minConfidence = null, $maxLabels = null)
     {
         $this->ensureMimeTypeIsSet();
 
         if (Str::contains($this->mimeType, 'image')) {
-            $result = $this->detectImageLabels($mediaId, $minConfidence, $maxLabels);
+            $result = $this->detectImageLabels($minConfidence, $maxLabels);
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
@@ -85,7 +77,7 @@ class Rekognition implements MediaRecognitionInterface
         }
 
         if (Str::contains($this->mimeType, 'video')) {
-            return $this->detectVideoLabels($mediaId, $minConfidence, $maxLabels);
+            return $this->detectVideoLabels($minConfidence, $maxLabels);
         }
 
         throw new \Exception('$mimeType does neither indicate being a video nor an image');
@@ -94,17 +86,16 @@ class Rekognition implements MediaRecognitionInterface
     /**
      * Detects faces in an image & analyzes them.
      *
-     * @param int|null $mediaId
      * @param array $attributes
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function detectFaces($mediaId = null, $attributes = ['DEFAULT'])
+    public function detectFaces($attributes = ['DEFAULT'])
     {
         $this->ensureMimeTypeIsSet();
 
         if (Str::contains($this->mimeType, 'image')) {
-            $result = $this->detectImageFaces($mediaId, $attributes);
+            $result = $this->detectImageFaces($attributes);
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
@@ -114,7 +105,7 @@ class Rekognition implements MediaRecognitionInterface
         }
 
         if (Str::contains($this->mimeType, 'video')) {
-            return $this->detectVideoFaces($mediaId, $attributes);
+            return $this->detectVideoFaces($attributes);
         }
 
         throw new \Exception('$mimeType does neither indicate being a video nor an image');
@@ -124,17 +115,16 @@ class Rekognition implements MediaRecognitionInterface
      * Detects moderation labels in an image.
      * This can be useful for children-friendly images or NSFW images.
      *
-     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function detectModeration($mediaId = null, $minConfidence = null)
+    public function detectModeration($minConfidence = null)
     {
         $this->ensureMimeTypeIsSet();
 
         if (Str::contains($this->mimeType, 'image')) {
-            $result = $this->detectImageModeration($mediaId, $minConfidence);
+            $result = $this->detectImageModeration($minConfidence);
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
@@ -144,7 +134,7 @@ class Rekognition implements MediaRecognitionInterface
         }
 
         if (Str::contains($this->mimeType, 'video')) {
-            return $this->detectVideoModeration($mediaId, $minConfidence);
+            return $this->detectVideoModeration($minConfidence);
         }
 
         throw new \Exception('$mimeType does neither indicate being a video nor an image');
@@ -153,17 +143,16 @@ class Rekognition implements MediaRecognitionInterface
     /**
      * Detects text in an image (OCR).
      *
-     * @param int|null $mediaId
      * @param array|null $filters
      * @return \Aws\Result
      * @throws \Exception
      */
-    public function detectText($mediaId = null, array $filters = null)
+    public function detectText(array $filters = null)
     {
         $this->ensureMimeTypeIsSet();
 
         if (Str::contains($this->mimeType, 'image')) {
-            $result = $this->detectImageText($mediaId, $filters);
+            $result = $this->detectImageText($filters);
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
@@ -173,7 +162,7 @@ class Rekognition implements MediaRecognitionInterface
         }
 
         if (Str::contains($this->mimeType, 'video')) {
-            return $this->detectVideoText($mediaId, $filters);
+            return $this->detectVideoText($filters);
         }
 
         throw new \Exception('$mimeType does neither indicate being a video nor an image');
@@ -188,14 +177,6 @@ class Rekognition implements MediaRecognitionInterface
      */
     protected function updateOrCreate($type, $mediaId, $results)
     {
-        if (! config('media-recognition.track_media_recognitions')) {
-            return $results;
-        }
-
-        if (is_null($mediaId)) {
-            throw new Exception('Please make sure to set a $mediaId.');
-        }
-
         MediaRecognition::updateOrCreate([
             'model_id' => $mediaId,
             'model_type' => config('media-converter.media_model'),
@@ -234,10 +215,6 @@ class Rekognition implements MediaRecognitionInterface
      */
     protected function updateVideoResults(array $results, string $type, int $mediaId)
     {
-        if (! config('media-recognition.track_media_recognitions')) {
-            return;
-        }
-
         $mediaRecognition = MediaRecognition::where('model_id', $mediaId)->firstOrFail();
         $mediaRecognition->$type = $results;
         $mediaRecognition->save();

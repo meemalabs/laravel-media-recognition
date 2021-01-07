@@ -25,7 +25,7 @@ class StartFaceDetection implements ShouldQueue
      *
      * @var string|null
      */
-    private ?string $mimeType;
+    private ?string $mimeType = null;
 
     private ?int $mediaId;
 

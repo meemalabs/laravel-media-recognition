@@ -25,9 +25,9 @@ class StartModerationDetection implements ShouldQueue
      *
      * @var string|null
      */
-    private ?string $mimeType;
+    private ?string $mimeType = null;
 
-    private ?int $mediaId;
+    private ?int $mediaId = null;
 
     private ?int $minConfidence;
 

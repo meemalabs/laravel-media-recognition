@@ -23,7 +23,14 @@ trait InteractsWithStorage
      *
      * @var string|null
      */
-    protected ?string $mimeType;
+    protected ?string $mimeType = null;
+
+    /**
+     * The id of your model that is related to this recognition.
+     *
+     * @var int|null
+     */
+    protected ?int $mediaId = null;
 
     /**
      * Set which S3 disk to use.
@@ -43,15 +50,14 @@ trait InteractsWithStorage
      *
      * @param string $source
      * @param string|null $mimeType
+     * @param int|null $mediaId
      * @return $this
      */
-    public function source(string $source, $mimeType = null)
+    public function source(string $source, string $mimeType = null, int $mediaId = null)
     {
         $this->source = $source;
-
-        if ($mimeType) {
-            $this->mimeType = $mimeType;
-        }
+        $this->mimeType = $mimeType;
+        $this->mediaId = $mediaId;
 
         return $this;
     }
@@ -61,11 +67,12 @@ trait InteractsWithStorage
      *
      * @param string $source
      * @param string|null $mimeType
+     * @param int|null $mediaId
      * @return $this
      */
-    public function path(string $source, $mimeType = null)
+    public function path(string $source, string $mimeType = null, int $mediaId = null)
     {
-        return $this->source($source, $mimeType);
+        return $this->source($source, $mimeType, $mediaId);
     }
 
     /**

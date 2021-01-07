@@ -8,143 +8,135 @@ interface MediaRecognition
      * Sets the source/path where the file is stored.
      *
      * @param string $source
+     * @param string|null $mimeType
+     * @param int|null $mediaId
      * @return $this
      */
-    public function source(string $source);
+    public function source(string $source, string $mimeType = null, int $mediaId = null);
 
     /**
      * Sets the source/path where the file is stored.
      *
      * @param string $path
+     * @param string|null $mimeType
+     * @param int|null $mediaId
      * @return $this
      */
-    public function path(string $path);
+    public function path(string $path, string $mimeType = null, int $mediaId = null);
 
     /**
      * Detects labels/objects in an image or video.
      *
-     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @param int|null $maxLabels
      * @return mixed
      * @throws \Exception
      */
-    public function detectLabels($mediaId = null, $minConfidence = null, $maxLabels = null);
+    public function detectLabels($minConfidence = null, $maxLabels = null);
 
     /**
      * Detects labels/objects in an image.
      *
-     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @param int|null $maxLabels
      * @return mixed
      * @throws \Exception
      */
-    public function detectImageLabels($mediaId = null, $minConfidence = null, $maxLabels = null);
+    public function detectImageLabels($minConfidence = null, $maxLabels = null);
 
     /**
      * Detects labels/objects in a video.
      *
-     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @param int|null $maxLabels
      * @return mixed
      * @throws \Exception
      */
-    public function detectVideoLabels($mediaId = null, $minConfidence = null, $maxLabels = null);
+    public function detectVideoLabels($minConfidence = null, $maxLabels = null);
 
     /**
      * Detects faces in an image or video & analyzes them.
      *
-     * @param int|null $mediaId
      * @param array $attributes
      * @return mixed
      * @throws \Exception
      */
-    public function detectFaces($mediaId = null, $attributes = ['DEFAULT']);
+    public function detectFaces($attributes = ['DEFAULT']);
 
     /**
      * Detects faces in an image & analyzes them.
      *
-     * @param int|null $mediaId
      * @param array $attributes
      * @return mixed
      * @throws \Exception
      */
-    public function detectImageFaces($mediaId = null, $attributes = ['DEFAULT']);
+    public function detectImageFaces($attributes = ['DEFAULT']);
 
     /**
      * Detects faces in an image & analyzes them.
      *
-     * @param int|null $mediaId
      * @param array $attributes
      * @return mixed
      * @throws \Exception
      */
-    public function detectVideoFaces($mediaId = null, $attributes = ['DEFAULT']);
+    public function detectVideoFaces($attributes = ['DEFAULT']);
 
     /**
      * Detects moderation labels in an image or video.
      * This can be useful for children-friendly images or NSFW images/videos.
      *
-     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @return mixed
      * @throws \Exception
      */
-    public function detectModeration($mediaId = null, $minConfidence = null);
+    public function detectModeration($minConfidence = null);
 
     /**
      * Detects moderation labels in an image.
      * This can be useful for children-friendly images or NSFW images.
      *
-     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @return mixed
      * @throws \Exception
      */
-    public function detectImageModeration($mediaId = null, $minConfidence = null);
+    public function detectImageModeration($minConfidence = null);
 
     /**
      * Detects moderation labels in an video.
      * This can be useful for children-friendly videos or NSFW videos.
      *
-     * @param int|null $mediaId
      * @param int|null $minConfidence
      * @return mixed
      * @throws \Exception
      */
-    public function detectVideoModeration($mediaId = null, $minConfidence = null);
+    public function detectVideoModeration($minConfidence = null);
 
     /**
      * Detects text in an image or video (OCR).
      *
-     * @param int|null $mediaId
      * @param array|null $filters
      * @return mixed
      * @throws \Exception
      */
-    public function detectText($mediaId = null, array $filters = null);
+    public function detectText(array $filters = null);
 
     /**
      * Detects text in an image (OCR).
      *
-     * @param int|null $mediaId
      * @param array|null $filters
      * @return mixed
      * @throws \Exception
      */
-    public function detectImageText($mediaId = null, array $filters = null);
+    public function detectImageText(array $filters = null);
 
     /**
      * Detects text in a video (OCR).
      *
-     * @param int|null $mediaId
      * @param array|null $filters
      * @return mixed
      * @throws \Exception
      */
-    public function detectVideoText($mediaId = null, array $filters = null);
+    public function detectVideoText(array $filters = null);
 
     /**
      * Get the "faces" from the video analysis.
