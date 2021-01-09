@@ -3,7 +3,6 @@
 namespace Meema\MediaRecognition\Recognizers;
 
 use Aws\Rekognition\RekognitionClient;
-use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Meema\MediaRecognition\Contracts\MediaRecognition as MediaRecognitionInterface;
@@ -192,12 +191,8 @@ class Rekognition implements MediaRecognitionInterface
      */
     protected function updateJobId(string $jobId, string $type)
     {
-        if (! config('media-recognition.track_media_recognitions')) {
-            return;
-        }
-
         if (is_null($this->mediaId)) {
-            throw new Exception('Please make sure to set a $mediaId.');
+            return;
         }
 
         MediaRecognition::updateOrCreate([
@@ -222,7 +217,7 @@ class Rekognition implements MediaRecognitionInterface
     protected function ensureMimeTypeIsSet()
     {
         if (is_null($this->mimeType)) {
-            $this->mimeType = Storage::disk(config('media-recognition.disk'))->mimeType($this->path);
+            $this->mimeType = Storage::disk(config('media-recognition.disk'))->mimeType($this->source);
         }
     }
 }

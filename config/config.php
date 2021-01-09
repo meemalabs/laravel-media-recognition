@@ -40,14 +40,6 @@ return [
     'iam_arn' => env('AWS_IAM_ARN'),
 
     /**
-     * This value indicates whether to track media recognitions in your database.
-     *
-     * Note: in case you *do* want to track media conversions, you will need to execute the
-     * migration included as part of the package.
-     */
-    'track_media_recognitions' => false,
-
-    /**
      * Specify the AWS SNS Topic ARN.
      * This triggers the webhook to be sent.
      *

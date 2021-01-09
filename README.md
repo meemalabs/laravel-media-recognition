@@ -18,20 +18,17 @@ At the current state, this is a wrapper package for AWS Rekognition with some ex
 use Meema\MediaRecognition\Facades\Recognize;
 
 // run any of the following methods:
-// note: any of the query parameters are optional
-// note: make use of $mediaId if you want to create a relationship to your media model
+// note: any of the detect*() method parameters are optional and will default to config values
 
 // "image operations" 
-$mediaId = 1; // if you want to track this "recognition" and relate it to a media model
-$recognize = Recognize::path('images/persons.jpg');
+$recognize = Recognize::path('images/persons.jpg', 'image/jpeg'); // while the $mimeType parameter is optional, it is recommended for performance reasons 
 $recognize->detectLabels($minConfidence = null, $maxLabels = null)
 $recognize->detectFaces($attributes = ['DEFAULT'])
 $recognize->detectModeration($minConfidence = null)
 $recognize->detectText()
 
 // "video operations"
-$mediaId = 1; // if you want to track this "recognition" and relate it to a media model
-$recognize = Recognize::path('videos/amazing-video.mp4', 'video/mp4', $mediaId);
+$recognize = Recognize::path('videos/amazing-video.mp4', 'video/mp4');
 $recognize->startLabelDetection($minConfidence = null, $maxResults = 1000)
 $recognize->startFaceDetection(string $faceAttribute = 'DEFAULT')
 $recognize->startContentModeration(int $minConfidence = null)
@@ -42,6 +39,10 @@ $recognize->getLabelsByJobId(string $jobId)
 $recognize->getFacesByJobId(string $jobId)
 $recognize->getContentModerationByJobId(string $jobId)
 $recognize->getTextDetectionByJobId(string $jobId)
+
+// if you want to track your media recognitions, use the Recognizable trait on your media model && run the included migration
+$media = Media::first();
+$media->recognize($path)->detectFaces(); // you may chain any of the detection methods
 ```
 
 ## Installation

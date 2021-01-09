@@ -23,7 +23,7 @@ class MediaRecognitionServiceProvider extends ServiceProvider
             ], 'config');
         }
 
-        if (config('media-recognition.track_media_recognitions') && ! class_exists('CreateMediaRecognitionsTable')) {
+        if (! class_exists('CreateMediaRecognitionsTable')) {
             $this->publishes([
                 __DIR__.'/../../database/migrations/create_media_recognitions_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_media_recognitions_table.php'),
             ], 'migrations');

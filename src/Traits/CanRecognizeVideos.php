@@ -147,12 +147,8 @@ trait CanRecognizeVideos
             'JobId' => $jobId,
         ]);
 
-        if (! config('media-recognition.track_media_recognitions')) {
-            return $results;
-        }
-
         if (is_null($mediaId)) {
-            throw new Exception('Please make sure to set a $mediaId.');
+            return $results;
         }
 
         $this->updateVideoResults($results->toArray(), 'labels', $mediaId);
@@ -174,12 +170,8 @@ trait CanRecognizeVideos
             'JobId' => $jobId,
         ]);
 
-        if (! config('media-recognition.track_media_recognitions')) {
-            return $results;
-        }
-
         if (is_null($mediaId)) {
-            throw new Exception('Please make sure to set a $mediaId.');
+            return $results;
         }
 
         $this->updateVideoResults($results->toArray(), 'faces', $mediaId);
@@ -201,12 +193,8 @@ trait CanRecognizeVideos
             'JobId' => $jobId,
         ]);
 
-        if (! config('media-recognition.track_media_recognitions')) {
-            return $results;
-        }
-
         if (is_null($mediaId)) {
-            throw new Exception('Please make sure to set a $mediaId.');
+            return $results;
         }
 
         $this->updateVideoResults($results->toArray(), 'moderation', $mediaId);
@@ -228,12 +216,8 @@ trait CanRecognizeVideos
             'JobId' => $jobId,
         ]);
 
-        if (! config('media-recognition.track_media_recognitions')) {
-            return $results;
-        }
-
         if (is_null($mediaId)) {
-            throw new Exception('Please make sure to set a $mediaId.');
+            return $results;
         }
 
         $this->updateVideoResults($results->toArray(), 'ocr', $mediaId);

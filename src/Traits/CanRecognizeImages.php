@@ -78,12 +78,8 @@ trait CanRecognizeImages
 
         $results = $this->client->detectLabels($this->settings);
 
-        if (! config('media-recognition.track_media_recognitions')) {
-            return $results;
-        }
-
         if (is_null($this->mediaId)) {
-            throw new Exception('Please make sure to set a $mediaId.');
+            return $results;
         }
 
         $this->updateOrCreate('labels', $results);
@@ -104,12 +100,8 @@ trait CanRecognizeImages
 
         $results = $this->client->detectFaces($this->settings);
 
-        if (! config('media-recognition.track_media_recognitions')) {
-            return $results;
-        }
-
         if (is_null($this->mediaId)) {
-            throw new Exception('Please make sure to set a $mediaId.');
+            return $results;
         }
 
         $this->updateOrCreate('faces', $results);
@@ -130,12 +122,8 @@ trait CanRecognizeImages
 
         $results = $this->client->detectModerationLabels($this->settings);
 
-        if (! config('media-recognition.track_media_recognitions')) {
-            return $results;
-        }
-
         if (is_null($this->mediaId)) {
-            throw new Exception('Please make sure to set a $mediaId.');
+            return $results;
         }
 
         $this->updateOrCreate('moderation', $results);
@@ -158,12 +146,8 @@ trait CanRecognizeImages
 
         $results = $this->client->detectText($this->settings);
 
-        if (! config('media-recognition.track_media_recognitions')) {
-            return $results;
-        }
-
         if (is_null($this->mediaId)) {
-            throw new Exception('Please make sure to set a $mediaId.');
+            return $results;
         }
 
         $this->updateOrCreate('ocr', $results);
