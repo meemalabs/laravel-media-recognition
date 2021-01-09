@@ -75,9 +75,9 @@ The following is the content of the published config file:
 
 ```php
 return [
-    /*
-    * The fully qualified class name of the "media" model.
-    */
+    /**
+     * The fully qualified class name of the "media" model.
+     */
     'media_model' => \App\Models\Media::class,
 
     /**
@@ -96,9 +96,9 @@ return [
      */
     'version' => 'latest',
 
-    /*
+    /**
      * The S3 bucket name where the image/video to be analyzed is stored.
-    */
+     */
     'bucket' => env('AWS_S3_BUCKET'),
 
     /**
