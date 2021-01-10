@@ -70,7 +70,7 @@ class Rekognition implements MediaRecognitionInterface
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
-            event(new FacialAnalysisCompleted($result));
+            event(new FacialAnalysisCompleted($result->toArray()));
 
             return $result;
         }
@@ -98,7 +98,7 @@ class Rekognition implements MediaRecognitionInterface
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
-            event(new FacialAnalysisCompleted($result));
+            event(new FacialAnalysisCompleted($result->toArray()));
 
             return $result;
         }
@@ -127,7 +127,7 @@ class Rekognition implements MediaRecognitionInterface
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
-            event(new ModerationAnalysisCompleted($result));
+            event(new ModerationAnalysisCompleted($result->toArray()));
 
             return $result;
         }
@@ -155,7 +155,7 @@ class Rekognition implements MediaRecognitionInterface
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
-            event(new TextAnalysisCompleted($result));
+            event(new TextAnalysisCompleted($result->toArray()));
 
             return $result;
         }
