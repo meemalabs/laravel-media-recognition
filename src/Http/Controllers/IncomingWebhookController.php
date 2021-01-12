@@ -42,27 +42,27 @@ class IncomingWebhookController extends Controller
     /**
      * @param string $type
      * @param array $message
-     * @param int $mediaId
+     * @param int|null $mediaId
      * @throws \Exception
      */
-    public function fireEventFor(string $type, array $message, int $mediaId)
+    public function fireEventFor(string $type, array $message, int $mediaId = null)
     {
         switch ($type) {
             case 'labels':
                 Recognize::getLabelsByJobId($message['JobId'], $mediaId);
-                event(new LabelAnalysisCompleted($message));
+                event(new LabelAnalysisCompleted($message, $mediaId));
                 break;
             case 'faces':
                 Recognize::getFacesByJobId($message['JobId'], $mediaId);
-                event(new FacialAnalysisCompleted($message));
+                event(new FacialAnalysisCompleted($message, $mediaId));
                 break;
             case 'moderation':
                 Recognize::getContentModerationByJobId($message['JobId'], $mediaId);
-                event(new ModerationAnalysisCompleted($message));
+                event(new ModerationAnalysisCompleted($message, $mediaId));
                 break;
             case 'ocr':
                 Recognize::getTextDetectionByJobId($message['JobId'], $mediaId);
-                event(new TextAnalysisCompleted($message));
+                event(new TextAnalysisCompleted($message, $mediaId));
                 break;
             default:
                 throw new \Exception();

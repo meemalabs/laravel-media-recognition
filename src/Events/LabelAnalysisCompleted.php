@@ -12,13 +12,17 @@ class LabelAnalysisCompleted
 
     public $message;
 
+    public ?int $mediaId;
+
     /**
      * Create a new event instance.
      *
      * @param $message
+     * @param int|null $mediaId
      */
-    public function __construct($message)
+    public function __construct($message, int $mediaId = null)
     {
         $this->message = $message;
+        $this->mediaId = $mediaId;
     }
 }

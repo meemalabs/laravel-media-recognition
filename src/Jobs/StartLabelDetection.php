@@ -66,7 +66,7 @@ class StartLabelDetection implements ShouldQueue
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
-            event(new LabelAnalysisCompleted($result));
+            event(new LabelAnalysisCompleted($result, $this->mediaId));
 
             return;
         }

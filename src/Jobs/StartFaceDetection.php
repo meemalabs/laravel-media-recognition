@@ -62,7 +62,7 @@ class StartFaceDetection implements ShouldQueue
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
-            event(new FacialAnalysisCompleted($result));
+            event(new FacialAnalysisCompleted($result, $this->mediaId));
 
             return;
         }
