@@ -26,4 +26,21 @@ trait Recognizable
     {
         return Recognize::source($path, $mimeType, $this->id);
     }
+
+    /**
+     * Return all recognition data.
+     *
+     * @return array
+     */
+    public function recognitionData()
+    {
+        $recognition = $this->recognition()->first();
+
+        return [
+            'labels' => $recognition->labels['Labels'] ?? [],
+            'faces' => $recognition->faces['FaceDetails'] ?? [],
+            'moderation' => $recognition->moderation['ModerationLabels'] ?? [],
+            'texts' => $recognition->ocr['TextDetections'] ?? [],
+        ];
+    }
 }
