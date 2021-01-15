@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Meema\MediaRecognition\Contracts\MediaRecognition as MediaRecognitionInterface;
 use Meema\MediaRecognition\Events\FacialAnalysisCompleted;
+use Meema\MediaRecognition\Events\LabelAnalysisCompleted;
 use Meema\MediaRecognition\Events\ModerationAnalysisCompleted;
 use Meema\MediaRecognition\Events\TextAnalysisCompleted;
 use Meema\MediaRecognition\Models\MediaRecognition;
@@ -70,7 +71,7 @@ class Rekognition implements MediaRecognitionInterface
 
             // we need to manually fire the event for image analyses because unlike the video analysis,
             // AWS is not sending a webhook upon completion of the image analysis
-            event(new FacialAnalysisCompleted($result->toArray(), $this->mediaId));
+            event(new LabelAnalysisCompleted($result->toArray(), $this->mediaId));
 
             return $result;
         }

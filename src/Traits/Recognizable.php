@@ -29,18 +29,23 @@ trait Recognizable
 
     /**
      * Return all recognition data.
+     * The return value "null" indicates that a recognition has been ran, but it just has no results.
      *
      * @return array
      */
     public function recognitionData()
     {
-        $recognition = $this->recognition()->first();
+        $recognition = $this->recognition()->latest()->first();
+
+        if (! $recognition) {
+            return [];
+        }
 
         return [
-            'labels' => $recognition->labels['Labels'] ?? [],
-            'faces' => $recognition->faces['FaceDetails'] ?? [],
-            'moderation' => $recognition->moderation['ModerationLabels'] ?? [],
-            'texts' => $recognition->ocr['TextDetections'] ?? [],
+            'labels' => count($recognition->labels['Labels']) ? $recognition->labels['Labels'] : null,
+            'faces' => count($recognition->faces['FaceDetails']) ? $recognition->faces['FaceDetails'] : null,
+            'moderation' => count($recognition->moderation['ModerationLabels']) ? $recognition->moderation['ModerationLabels'] : null,
+            'texts' => count($recognition->ocr['TextDetections']) ? $recognition->ocr['TextDetections'] : null,
         ];
     }
 }
