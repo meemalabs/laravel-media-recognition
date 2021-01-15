@@ -2,6 +2,7 @@
 
 namespace Meema\MediaRecognition\Traits;
 
+use Illuminate\Support\Facades\Log;
 use Meema\MediaRecognition\Facades\Recognize;
 use Meema\MediaRecognition\Models\MediaRecognition;
 
@@ -38,14 +39,40 @@ trait Recognizable
         $recognition = $this->recognition()->latest()->first();
 
         if (! $recognition) {
-            return [];
+            return [
+                'labels' => null,
+                'faces' => null,
+                'moderation' => null,
+                'texts' => null,
+            ];
+        }
+
+        // null indicates that the "recognition" has not been ran for the category
+        $labels = $faces = $moderation = $texts = null;
+
+        if ($recognition->labels && is_array($recognition->labels['Labels'])) {
+            $labels = $recognition->labels['Labels'];
+        }
+
+        if ($recognition->faces && is_array($recognition->faces['FaceDetails'])) {
+            $faces = $recognition->faces['FaceDetails'];
+        }
+
+        Log::info('before moderation');
+        if ($recognition->moderation && is_array($recognition->moderation['ModerationLabels'])) {
+            Log::info('after', $recognition->moderation['ModerationLabels']);
+            $moderation = $recognition->moderation['ModerationLabels'];
+        }
+
+        if ($recognition->ocr && is_array($recognition->ocr['TextDetections'])) {
+            $texts = $recognition->ocr['TextDetections'];
         }
 
         return [
-            'labels' => count($recognition->labels['Labels']) ? $recognition->labels['Labels'] : null,
-            'faces' => count($recognition->faces['FaceDetails']) ? $recognition->faces['FaceDetails'] : null,
-            'moderation' => count($recognition->moderation['ModerationLabels']) ? $recognition->moderation['ModerationLabels'] : null,
-            'texts' => count($recognition->ocr['TextDetections']) ? $recognition->ocr['TextDetections'] : null,
+            'labels' => $labels,
+            'faces' => $faces,
+            'moderation' => $moderation,
+            'texts' => $texts,
         ];
     }
 }
