@@ -1,11 +1,11 @@
 # Media Recognition Package for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/meema/laravel-media-recognition.svg?style=flat-square)](https://packagist.org/packages/meema/laravel-media-recognition)
-[![StyleCI](https://github.styleci.io/repos/264578171/shield?branch=master)](https://github.styleci.io/repos/264578171)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/?branch=master)
+[![StyleCI](https://github.styleci.io/repos/264578171/shield?branch=main)](https://github.styleci.io/repos/264578171)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/?branch=main)
 [![Total Downloads](https://img.shields.io/packagist/dt/meema/laravel-media-recognition.svg?style=flat-square)](https://packagist.org/packages/meema/laravel-media-recognition)
-[![License](https://img.shields.io/github/license/meemalabs/laravel-media-recognition.svg?style=flat-square)](https://github.com/meemalabs/laravel-media-recognition/blob/master/LICENSE.md)
-<!-- [[![Test](https://github.com/meemalabs/laravel-media-recognition/workflows/Test/badge.svg?branch=master)](https://github.com/meemalabs/laravel-media-recognition/actions) -->
+[![License](https://img.shields.io/github/license/meemalabs/laravel-media-recognition.svg?style=flat-square)](https://github.com/meemalabs/laravel-media-recognition/blob/main/LICENSE.md)
+<!-- [[![Test](https://github.com/meemalabs/laravel-media-recognition/workflows/Test/badge.svg?branch=main)](https://github.com/meemalabs/laravel-media-recognition/actions) -->
 <!-- [[![Build Status](wip)](ghactions) -->
 
 At the current state, this is a wrapper package for AWS Rekognition with some extra handy methods.
@@ -20,8 +20,8 @@ use Meema\MediaRecognition\Facades\Recognize;
 // run any of the following methods:
 // note: any of the detect*() method parameters are optional and will default to config values
 
-// "image operations" 
-$recognize = Recognize::path('images/persons.jpg', 'image/jpeg'); // while the $mimeType parameter is optional, it is recommended for performance reasons 
+// "image operations"
+$recognize = Recognize::path('images/persons.jpg', 'image/jpeg'); // while the $mimeType parameter is optional, it is recommended for performance reasons
 $recognize->detectLabels($minConfidence = null, $maxLabels = null)
 $recognize->detectFaces($attributes = ['DEFAULT'])
 $recognize->detectModeration($minConfidence = null)
@@ -89,7 +89,7 @@ return [
     ],
 
     'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-    
+
     /**
      * Specify the version of the Rekognition API you would like to use.
      * Please only adjust this value if you know what you are doing.
@@ -140,7 +140,7 @@ use Meema\MediaRecognition\Traits\Recognizable;
 class Media extends Model
 {
     use Recognizable;
-    
+
     // ...
 }
 ```
