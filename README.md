@@ -10,7 +10,7 @@
 
 At the current state, this is a wrapper package for AWS Rekognition with some extra handy methods.
 
-![laravel-media-recognition package image](https://banners.beyondco.de/Media%20Recognition.png?theme=light&packageManager=composer+require&packageName=meema%2Flaravel-media-recognition&pattern=architect&style=style_1&description=Easily+%26+quickly+analyze%2Frecognize+the+content+of+your+images.&md=1&showWatermark=1&fontSize=175px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
+![laravel-media-recognition package image](https://banners.beyondco.de/Media%20Recognition.png?theme=light&packageManager=composer+require&packageName=meema%2Flaravel-media-recognition&pattern=architect&style=style_1&description=Easily+%26+quickly+recognize+the+content+of+your+images+%26+video+content&md=1&showWatermark=1&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
 
 ## Usage
 
