@@ -1,7 +1,7 @@
 # Media Recognition Package for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/meema/laravel-media-recognition.svg?style=flat-square)](https://packagist.org/packages/meema/laravel-media-recognition)
-[![StyleCI](https://github.styleci.io/repos/264578171/shield?branch=main)](https://github.styleci.io/repos/264578171)
+[![StyleCI](https://github.styleci.io/repos/227280228/shield?branch=main)](https://github.styleci.io/repos/227280228)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/?branch=main)
 [![Total Downloads](https://img.shields.io/packagist/dt/meema/laravel-media-recognition.svg?style=flat-square)](https://packagist.org/packages/meema/laravel-media-recognition)
 [![License](https://img.shields.io/github/license/meemalabs/laravel-media-recognition.svg?style=flat-square)](https://github.com/meemalabs/laravel-media-recognition/blob/main/LICENSE.md)
