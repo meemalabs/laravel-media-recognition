@@ -1,7 +1,7 @@
 # Media Recognition Package for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/meema/laravel-media-recognition.svg?style=flat-square)](https://packagist.org/packages/meema/laravel-media-recognition)
-[![StyleCI](https://github.styleci.io/repos/264578171/shield?branch=main)](https://github.styleci.io/repos/264578171)
+[![StyleCI](https://github.styleci.io/repos/227280228/shield?branch=main)](https://github.styleci.io/repos/227280228)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/?branch=main)
 [![Total Downloads](https://img.shields.io/packagist/dt/meema/laravel-media-recognition.svg?style=flat-square)](https://packagist.org/packages/meema/laravel-media-recognition)
 [![License](https://img.shields.io/github/license/meemalabs/laravel-media-recognition.svg?style=flat-square)](https://github.com/meemalabs/laravel-media-recognition/blob/main/LICENSE.md)
@@ -10,7 +10,7 @@
 
 At the current state, this is a wrapper package for AWS Rekognition with some extra handy methods.
 
-![laravel-media-recognition package image](https://banners.beyondco.de/Media%20Recognition.png?theme=light&packageManager=composer+require&packageName=meema%2Flaravel-media-recognition&pattern=architect&style=style_1&description=Easily+%26+quickly+analyze%2Frecognize+the+content+of+your+images.&md=1&showWatermark=1&fontSize=175px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
+![laravel-media-recognition package image](https://banners.beyondco.de/Media%20Recognition.png?theme=light&packageManager=composer+require&packageName=meema%2Flaravel-media-recognition&pattern=architect&style=style_1&description=Easily+%26+quickly+recognize+the+content+of+your+images+%26+video+content&md=1&showWatermark=1&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
 
 ## Usage
 
