@@ -167,7 +167,7 @@ Second, let's create an AWS SNS Topic which will notify our "exposed" API endpoi
 
 ![AWS SNS Topic Creation Screenshot](https://i.imgur.com/4MKtfuY.png)
 
-4. Copy & note down the topic ARN which you just created. It looks something like this: `arn:aws:sns:region:123456789012:RekognitionUpdate`.
+4. Copy & note down the topic ARN which you just created. It should look similar to this: `arn:aws:sns:region:123456789012:RekognitionUpdate`.
 5. On the Topic details: `RekognitionUpdate` page, in the Subscriptions section, choose "Create subscription".
 6. For Protocol, choose "HTTPS". For Endpoint, enter exposed API URL that you generated in a previous step, including the API URI.
 
