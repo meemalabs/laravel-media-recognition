@@ -3,6 +3,7 @@
 namespace Meema\MediaRecognition\Traits;
 
 use Exception;
+use Illuminate\Support\Str;
 
 trait CanRecognizeVideos
 {
@@ -34,7 +35,8 @@ trait CanRecognizeVideos
             'SNSTopicArn' => config('media-recognition.sns_topic_arn'),
         ];
 
-        $uniqueId = $type.'_'.$this->mediaId;
+        $uniqueId = $type.'_'.$this->mediaId.'_'.Str::random(6);
+
         // Idempotent token used to identify the start request.
         // If you use the same token with multiple StartCelebrityRecognition requests, the same JobId is returned.
         // Use ClientRequestToken to prevent the same job from being accidentally started more than once.
