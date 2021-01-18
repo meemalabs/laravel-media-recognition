@@ -105,7 +105,7 @@ trait CanRecognizeVideos
         $results = $this->client->startContentModeration($this->settings);
 
         if ($results['JobId']) {
-            $this->updateJobId($results['JobId'], 'faces');
+            $this->updateJobId($results['JobId'], 'moderation');
         }
 
         return $results;
