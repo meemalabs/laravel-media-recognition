@@ -74,7 +74,7 @@ trait CanRecognizeVideos
      * @return mixed
      * @throws \Exception
      */
-    public function detectVideoFaces($attributes = ['DEFAULT'])
+    public function detectVideoFaces($attributes = 'DEFAULT')
     {
         $this->setVideoSettings('faces');
 

@@ -105,7 +105,7 @@ class Rekognition implements MediaRecognitionInterface
         }
 
         if (Str::contains($this->mimeType, 'video')) {
-            return $this->detectVideoFaces($attributes);
+            return $this->detectVideoFaces();
         }
 
         throw new \Exception('$mimeType does neither indicate being a video nor an image');
