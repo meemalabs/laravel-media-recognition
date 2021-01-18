@@ -106,7 +106,7 @@ class Rekognition implements MediaRecognitionInterface
 
         if (Str::contains($this->mimeType, 'video')) {
             $attribute = is_array($attributes) ? $attributes[0] : $attributes;
-            
+
             return $this->detectVideoFaces($attribute);
         }
 
