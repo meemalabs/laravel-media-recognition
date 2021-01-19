@@ -2,7 +2,6 @@
 
 namespace Meema\MediaRecognition\Traits;
 
-use Illuminate\Support\Facades\Log;
 use Meema\MediaRecognition\Facades\Recognize;
 use Meema\MediaRecognition\Models\MediaRecognition;
 
@@ -36,7 +35,7 @@ trait Recognizable
      */
     public function recognitionData()
     {
-        $recognition = $this->recognition()->latest()->first();
+        $recognition = $this->recognition()->first();
 
         if (! $recognition) {
             return [
@@ -54,13 +53,11 @@ trait Recognizable
             $labels = $recognition->labels['Labels'];
         }
 
-        if ($recognition->faces && is_array($recognition->faces['FaceDetails'])) {
-            $faces = $recognition->faces['FaceDetails'];
+        if ($recognition->faces && is_array($recognition->faces['Faces'])) {
+            $faces = $recognition->faces['Faces'];
         }
 
-        Log::info('before moderation');
         if ($recognition->moderation && is_array($recognition->moderation['ModerationLabels'])) {
-            Log::info('after', $recognition->moderation['ModerationLabels']);
             $moderation = $recognition->moderation['ModerationLabels'];
         }
 
@@ -74,5 +71,68 @@ trait Recognizable
             'moderation' => $moderation,
             'texts' => $texts,
         ];
+    }
+
+    public function minimalRecognitionData(
+        bool $includeLabels = true,
+        bool $includeFaces = true,
+        bool $includeModeration = true,
+        bool $includeTexts = true,
+        int $limit = 50
+    ) {
+        $data = $this->recognitionData();
+
+        if (! $data) {
+            return [
+                'labels' => null,
+                'faces' => null,
+                'moderation' => null,
+                'texts' => null,
+            ];
+        }
+
+        $array = [];
+
+        if ($includeLabels) {
+            $array['labels'] = collect($data['labels'])->map(function ($label) {
+                return [
+                    'name' => $label['Label']['Name'],
+                    'confidence' => $label['Label']['Confidence'],
+                    'timestamp' => $label['Timestamp'],
+                ];
+            })->unique('name')->take($limit)->sortByDesc('confidence')->values();
+        }
+
+        if ($includeFaces) {
+            $array['faces'] = collect($data['faces'])->map(function ($face) {
+                return [
+                    'bounding_box' => $face['Face']['BoundingBox'],
+                    'confidence' => $face['Face']['Confidence'],
+                    'timestamp' => $face['Timestamp'],
+                ];
+            })->take($limit)->sortByDesc('confidence')->values();
+        }
+
+        if ($includeModeration) {
+            $array['moderation'] = collect($data['moderation'])->map(function ($label) {
+                return [
+                    'name' => $label['ModerationLabel']['Name'],
+                    'confidence' => $label['ModerationLabel']['Confidence'],
+                    'timestamp' => $label['Timestamp']
+                ];
+            })->unique('name')->take($limit)->sortByDesc('confidence')->values();
+        }
+
+        if ($includeTexts) {
+            $array['texts'] = collect($data['texts'])->map(function ($text) {
+                return [
+                    'text' => $text['TextDetection']['DetectedText'],
+                    'confidence' => $text['TextDetection']['Confidence'],
+                    'timestamp' => $text['Timestamp']
+                ];
+            })->unique('text')->take($limit)->sortByDesc('confidence')->values();
+        }
+
+        return $array;
     }
 }
