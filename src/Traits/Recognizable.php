@@ -118,7 +118,7 @@ trait Recognizable
                 return [
                     'name' => $label['ModerationLabel']['Name'],
                     'confidence' => $label['ModerationLabel']['Confidence'],
-                    'timestamp' => $label['Timestamp']
+                    'timestamp' => $label['Timestamp'],
                 ];
             })->unique('name')->take($limit)->sortByDesc('confidence')->values();
         }
@@ -128,7 +128,7 @@ trait Recognizable
                 return [
                     'text' => $text['TextDetection']['DetectedText'],
                     'confidence' => $text['TextDetection']['Confidence'],
-                    'timestamp' => $text['Timestamp']
+                    'timestamp' => $text['Timestamp'],
                 ];
             })->unique('text')->take($limit)->sortByDesc('confidence')->values();
         }
