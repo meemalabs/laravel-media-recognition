@@ -79,7 +79,7 @@ trait Recognizable
         bool $includeModeration = true,
         bool $includeTexts = true,
         int $limit = 50
-    ) {
+    ): array {
         $data = $this->recognitionData();
 
         if (! $data) {
@@ -100,7 +100,7 @@ trait Recognizable
                     'confidence' => $label['Label']['Confidence'],
                     'timestamp' => $label['Timestamp'],
                 ];
-            })->unique('name')->take($limit)->sortByDesc('confidence')->values();
+            })->unique('name')->sortByDesc('confidence')->take($limit)->values();
         }
 
         if ($includeFaces) {
@@ -110,7 +110,7 @@ trait Recognizable
                     'confidence' => $face['Face']['Confidence'],
                     'timestamp' => $face['Timestamp'],
                 ];
-            })->take($limit)->sortByDesc('confidence')->values();
+            })->sortByDesc('confidence')->take($limit)->values();
         }
 
         if ($includeModeration) {
@@ -120,7 +120,7 @@ trait Recognizable
                     'confidence' => $label['ModerationLabel']['Confidence'],
                     'timestamp' => $label['Timestamp'],
                 ];
-            })->unique('name')->take($limit)->sortByDesc('confidence')->values();
+            })->unique('name')->sortByDesc('confidence')->take($limit)->values();
         }
 
         if ($includeTexts) {
@@ -130,7 +130,7 @@ trait Recognizable
                     'confidence' => $text['TextDetection']['Confidence'],
                     'timestamp' => $text['Timestamp'],
                 ];
-            })->unique('text')->take($limit)->sortByDesc('confidence')->values();
+            })->unique('text')->sortByDesc('confidence')->take($limit)->values();
         }
 
         return $array;
