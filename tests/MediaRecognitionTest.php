@@ -1,99 +1,107 @@
 <?php
 
-namespace Meema\MediaRecognition\Tests;
+use Meema\MediaRecognition\Facades\Recognize;
 
-use Aws\Rekognition\RekognitionClient;
+uses(Meema\MediaRecognition\Tests\MediaRecognitionTestCase::class);
 
-class MediaRecognitionTest extends MediaRecognitionTestCase
-{
-    /**
-     * @var \Aws\Rekognition\RekognitionClient
-     */
-    protected $client;
+beforeEach(function () {
+    $this->initializeDotEnv();
+    $this->initializeSettings();
+});
 
-    /**
-     * Setup client and results.
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
+it('can recognize source', function () {
+    $path = 'test-media/butterfly.jpg';
+    $mimeType = 'image/jpeg';
 
-        $this->client = $this->getMockBuilder(RekognitionClient::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
+    $recognize = Recognize::source($path, $mimeType);
 
-    /** @test */
-    public function it_can_detect_image_labels()
-    {
-        $this->markTestIncomplete();
-    }
+    $this->assertTrue($recognize != null);
+});
 
-    /** @test */
-    public function it_can_detect_image_faces()
-    {
-        $this->markTestIncomplete();
-    }
+it('it can detect image labels', function () {
+    $path = 'test-media/butterfly.jpg';
+    $mimeType = 'image/jpeg';
 
-    /** @test */
-    public function it_can_detect_image_moderation()
-    {
-        $this->markTestIncomplete();
-    }
+    $recognize = Recognize::source($path, $mimeType);
+    $response = $recognize->detectLabels();
 
-    /** @test */
-    public function it_can_detect_image_text()
-    {
-        $this->markTestIncomplete();
-    }
+    $this->assertTrue(count($response['Labels']) > 0);
+    $this->assertEquals($response['@metadata']['statusCode'], 200);
+});
 
-    /** @test */
-    public function it_can_detect_video_labels()
-    {
-        $this->markTestIncomplete();
-    }
+it('it can detect image faces', function () {
+    $path = 'test-media/people.jpg';
+    $mimeType = 'image/jpeg';
 
-    /** @test */
-    public function it_can_detect_video_faces()
-    {
-        $this->markTestIncomplete();
-    }
+    $recognize = Recognize::source($path, $mimeType);
+    $response = $recognize->detectFaces();
 
-    /** @test */
-    public function it_can_detect_video_moderation()
-    {
-        $this->markTestIncomplete();
-    }
+    $this->assertTrue(count($response['FaceDetails']) > 0);
+    $this->assertEquals($response['@metadata']['statusCode'], 200);
+});
 
-    /** @test */
-    public function it_can_detect_video_text()
-    {
-        $this->markTestIncomplete();
-    }
+it('it can detect image moderation', function () {
+    $path = 'test-media/yoga_swimwear.jpg';
+    $mimeType = 'image/jpeg';
 
-    /** @test */
-    public function it_can_get_video_labels_by_job_id()
-    {
-        $this->markTestIncomplete();
-    }
+    $recognize = Recognize::source($path, $mimeType);
+    $response = $recognize->detectModeration();
 
-    /** @test */
-    public function it_can_get_video_faces_by_job_id()
-    {
-        $this->markTestIncomplete();
-    }
+    $this->assertTrue(count($response['ModerationLabels']) > 0);
+    $this->assertEquals($response['@metadata']['statusCode'], 200);
+});
 
-    /** @test */
-    public function it_can_get_video_moderation_by_job_id()
-    {
-        $this->markTestIncomplete();
-    }
+it('it can detect image text', function () {
+    $path = 'test-media/coffee_monday.jpg';
+    $mimeType = 'image/jpeg';
 
-    /** @test */
-    public function it_can_get_video_text_by_job_id()
-    {
-        $this->markTestIncomplete();
-    }
-}
+    $recognize = Recognize::source($path, $mimeType);
+    $response = $recognize->detectText();
+
+    $this->assertTrue(count($response['TextDetections']) > 0);
+    $this->assertEquals($response['@metadata']['statusCode'], 200);
+});
+
+it('it can detect video labels', function () {
+    $path = 'pest-tests/sample-video.mp4';
+    $mimeType = 'video/mp4';
+
+    $recognize = Recognize::source($path, $mimeType);
+    $response = $recognize->detectLabels();
+
+    $this->assertTrue($response['JobId'] != null);
+    $this->assertEquals($response['@metadata']['statusCode'], 200);
+});
+
+it('it can detect video faces', function () {
+    $path = 'pest-tests/sample-video.mp4';
+    $mimeType = 'video/mp4';
+
+    $recognize = Recognize::source($path, $mimeType);
+    $response = $recognize->detectFaces();
+
+    $this->assertTrue($response['JobId'] != null);
+    $this->assertEquals($response['@metadata']['statusCode'], 200);
+});
+
+it('it can detect video moderation', function () {
+    $path = 'pest-tests/sample-video.mp4';
+    $mimeType = 'video/mp4';
+
+    $recognize = Recognize::source($path, $mimeType);
+    $response = $recognize->detectModeration();
+
+    $this->assertTrue($response['JobId'] != null);
+    $this->assertEquals($response['@metadata']['statusCode'], 200);
+});
+
+it('it can detect video text', function () {
+    $path = 'pest-tests/sample-video.mp4';
+    $mimeType = 'video/mp4';
+
+    $recognize = Recognize::source($path, $mimeType);
+    $response = $recognize->detectText();
+
+    $this->assertTrue($response['JobId'] != null);
+    $this->assertEquals($response['@metadata']['statusCode'], 200);
+});
