@@ -32,7 +32,7 @@ class MediaRecognitionTestCase extends TestCase
         Config::set('media-converter.credentials.key', env('AWS_ACCESS_KEY_ID'));
         Config::set('media-converter.credentials.secret', env('AWS_SECRET_ACCESS_KEY'));
         Config::set('media-recognition.disk', env('REKOGNITION_DISK', 's3'));
-        Config::set('media-recognition.iam_arn',env('AWS_IAM_REKOGNITION_ARN'));
+        Config::set('media-recognition.iam_arn', env('AWS_IAM_REKOGNITION_ARN'));
         Config::set('media-recognition.sns_topic_arn', env('AWS_SNS_TOPIC_ARN'));
         Config::set('filesystems.disks.s3.bucket', env('AWS_S3_BUCKET'));
     }
