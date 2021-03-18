@@ -40,3 +40,12 @@ jobs:
               run: |
                   composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
                   composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+            - name: Execute tests
+              run: vendor/bin/pest
+              env:
+                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  AWS_DEFAULT_REGION: 'us-east-1'
+                  AWS_MEDIACONVERT_ACCOUNT_URL: ${{ secrets.AWS_MEDIACONVERT_ACCOUNT_URL }}
+                  AWS_IAM_ARN: ${{ secrets.AWS_IAM_ARN }}
+                  AWS_QUEUE_ARN: ${{ secrets.AWS_QUEUE_ARN }}
