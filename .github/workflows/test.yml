@@ -44,10 +44,10 @@ jobs:
             - name: Execute tests
               run: vendor/bin/pest
               env:
-                  AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
-                  AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
-                  AWS_S3_BUCKET: ${{ env.AWS_S3_BUCKET }}
-                  AWS_S3_PREFIX: ${{ env.AWS_S3_PREFIX }}
+                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+                  AWS_S3_PREFIX: ${{ secrets.AWS_S3_PREFIX }}
                   AWS_DEFAULT_REGION: 'us-east-1'
-                  AWS_IAM_REKOGNITION_ARN: ${{ env.AWS_IAM_REKOGNITION_ARN }}
-                  AWS_SNS_TOPIC_ARN: ${{ env.AWS_SNS_TOPIC_ARN }}
+                  AWS_IAM_REKOGNITION_ARN: ${{ secrets.AWS_IAM_REKOGNITION_ARN }}
+                  AWS_SNS_TOPIC_ARN: ${{ secrets.AWS_SNS_TOPIC_ARN }}
