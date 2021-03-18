@@ -53,8 +53,8 @@ trait Recognizable
             $labels = $recognition->labels['Labels'];
         }
 
-        if ($recognition->faces && is_array($recognition->faces['Faces'])) {
-            $faces = $recognition->faces['Faces'];
+        if ($recognition->faces && is_array($recognition->faces['FaceDetails'])) {
+            $faces = $recognition->faces['FaceDetails'];
         }
 
         if ($recognition->moderation && is_array($recognition->moderation['ModerationLabels'])) {
