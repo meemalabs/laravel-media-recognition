@@ -4,8 +4,8 @@ namespace Meema\MediaRecognition\Http\Controllers;
 
 use Aws\Sns\Message;
 use Illuminate\Routing\Controller;
-use Meema\MediaRecognition\Events\FacialAnalysisCompleted;
 use Illuminate\Support\Facades\Log;
+use Meema\MediaRecognition\Events\FacialAnalysisCompleted;
 use Meema\MediaRecognition\Events\LabelAnalysisCompleted;
 use Meema\MediaRecognition\Events\ModerationAnalysisCompleted;
 use Meema\MediaRecognition\Events\TextAnalysisCompleted;
