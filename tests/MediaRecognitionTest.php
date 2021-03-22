@@ -18,7 +18,7 @@ it('can recognize source', function () {
     $this->assertTrue($recognize != null);
 });
 
-it('it can detect image labels', function () {
+it('can detect image labels', function () {
     $path = 'test-media/butterfly.jpg';
     $mimeType = 'image/jpeg';
 
@@ -29,7 +29,7 @@ it('it can detect image labels', function () {
     $this->assertEquals($response['@metadata']['statusCode'], 200);
 });
 
-it('it can detect image faces', function () {
+it('can detect image faces', function () {
     $path = 'test-media/people.jpg';
     $mimeType = 'image/jpeg';
 
@@ -40,7 +40,7 @@ it('it can detect image faces', function () {
     $this->assertEquals($response['@metadata']['statusCode'], 200);
 });
 
-it('it can detect image moderation', function () {
+it('can detect image moderation', function () {
     $path = 'test-media/yoga_swimwear.jpg';
     $mimeType = 'image/jpeg';
 
@@ -51,7 +51,7 @@ it('it can detect image moderation', function () {
     $this->assertEquals($response['@metadata']['statusCode'], 200);
 });
 
-it('it can detect image text', function () {
+it('can detect image text', function () {
     $path = 'test-media/coffee_monday.jpg';
     $mimeType = 'image/jpeg';
 
@@ -62,7 +62,7 @@ it('it can detect image text', function () {
     $this->assertEquals($response['@metadata']['statusCode'], 200);
 });
 
-it('it can detect video labels', function () {
+it('can detect video labels', function () {
     $path = 'pest-tests/sample-video.mp4';
     $mimeType = 'video/mp4';
 
@@ -73,7 +73,7 @@ it('it can detect video labels', function () {
     $this->assertEquals($response['@metadata']['statusCode'], 200);
 });
 
-it('it can detect video faces', function () {
+it('can detect video faces', function () {
     $path = 'pest-tests/sample-video.mp4';
     $mimeType = 'video/mp4';
 
@@ -84,7 +84,7 @@ it('it can detect video faces', function () {
     $this->assertEquals($response['@metadata']['statusCode'], 200);
 });
 
-it('it can detect video moderation', function () {
+it('can detect video moderation', function () {
     $path = 'pest-tests/sample-video.mp4';
     $mimeType = 'video/mp4';
 
@@ -95,7 +95,7 @@ it('it can detect video moderation', function () {
     $this->assertEquals($response['@metadata']['statusCode'], 200);
 });
 
-it('it can detect video text', function () {
+it('can detect video text', function () {
     $path = 'pest-tests/sample-video.mp4';
     $mimeType = 'video/mp4';
 
