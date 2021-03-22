@@ -71,7 +71,7 @@ class IncomingWebhookController extends Controller
     }
 
     /**
-     * Because initially
+     * Because initially.
      *
      * @return array
      */
