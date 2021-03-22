@@ -71,8 +71,6 @@ class IncomingWebhookController extends Controller
     }
 
     /**
-     * Because initially.
-     *
      * @return array
      */
     public function ensureSubscriptionIsConfirmed(): array

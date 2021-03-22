@@ -187,7 +187,7 @@ Finally, we need to ensure the subscription is confirmed. By navigating to the `
 
 By default, AWS will have sent a post request to URL you defined in your "Subscription" setup. This package automatically handles the "confirmation" part. In case there is an issue and it is not confirmed yet, please click on the "Request confirmation" button as seen in the screenshot above. 
 
-You can also the view request in the Expose interface, by visiting the "Dashboard Url", which should be similar to: `http://127.0.0.1:4040`
+You can also view the request in the Expose interface, by visiting the "Dashboard Url", which should be similar to: `http://127.0.0.1:4040`
 
 Once the status reflects "Confirmed", your API will receive webhooks as AWS provides updates.
 
