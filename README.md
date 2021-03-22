@@ -181,17 +181,15 @@ https://meema-api.sharedwithexpose.com/api/webhooks/media-recognition
 
 #### Confirming Your Subscription
 
-Finally, we need to confirm the subscription which is easily done by navigating to the `RekognitionUpdate` Topic page. There, you should see the following section:
+Finally, we need to ensure the subscription is confirmed. By navigating to the `RekognitionUpdate` Topic page, you should see the following section:
 
 ![AWS SNS Subscription Confirmation Screenshot](https://i.imgur.com/oTPwNen.png)
 
-By default, AWS will have sent a post request to URL you defined in your "Subscription" setup. You can view request in the Expose interface, by visiting the "Dashboard Url", which should be similar to: `http://127.0.0.1:4040`
+By default, AWS will have sent a post request to URL you defined in your "Subscription" setup. This package automatically handles the "confirmation" part. In case there is an issue and it is not confirmed yet, please click on the "Request confirmation" button as seen in the screenshot above. 
 
-Once you are in the Expose dashboard, you need to locate the `SubscribeURL` value. Once located, copy it and use it to confirm your SNS Topic Subscription.
+You can also the view request in the Expose interface, by visiting the "Dashboard Url", which should be similar to: `http://127.0.0.1:4040`
 
-![AWS SNS Subscription Confirmation Screenshot](https://i.imgur.com/ECGIBUY.png)
-
-Now, your API will receive webhooks as AWS provides updates!
+Once the status reflects "Confirmed", your API will receive webhooks as AWS provides updates.
 
 ## Deploying to Laravel Vapor
 

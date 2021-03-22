@@ -4,7 +4,7 @@ namespace Meema\MediaRecognition\Http\Controllers;
 
 use Aws\Sns\Message;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use Meema\MediaRecognition\Events\FacialAnalysisCompleted;
 use Meema\MediaRecognition\Events\LabelAnalysisCompleted;
 use Meema\MediaRecognition\Events\ModerationAnalysisCompleted;
@@ -23,9 +23,7 @@ class IncomingWebhookController extends Controller
      */
     public function __invoke()
     {
-        Log::info('incoming webhook for a media recognition', request()->toArray());
-
-        $message = json_decode(Message::fromRawPostData()['Message'], true);
+        $message = $this->ensureSubscriptionIsConfirmed();
 
         if ($message['Status'] !== 'SUCCEEDED') {
             return;
@@ -70,5 +68,21 @@ class IncomingWebhookController extends Controller
             default:
                 throw new \Exception();
         }
+    }
+
+    /**
+     * Because initially
+     *
+     * @return array
+     */
+    public function ensureSubscriptionIsConfirmed(): array
+    {
+        $message = Message::fromRawPostData()->toArray();
+
+        if (array_key_exists('SubscribeURL', $message)) {
+            Http::get($message['SubscribeURL']);
+        }
+
+        return $message;
     }
 }
