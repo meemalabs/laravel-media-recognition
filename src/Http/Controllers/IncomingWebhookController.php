@@ -28,13 +28,15 @@ class IncomingWebhookController extends Controller
 
         Log::info('incoming rekognition webhook message', $message);
 
-        if (!array_key_exists('Status', $message)) {
+        if (! array_key_exists('Status', $message)) {
             Log::alert('incoming rekognition webhook: "Status"-key does not exist');
+
             return;
         }
 
         if ($message['Status'] !== 'SUCCEEDED') {
             Log::alert('incoming rekognition webhook: "Status"-field value does not equal "SUCCEEDED"');
+
             return;
         }
 
