@@ -5,6 +5,7 @@ namespace Meema\MediaRecognition\Http\Controllers;
 use Aws\Sns\Message;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Meema\MediaRecognition\Events\FacialAnalysisCompleted;
 use Meema\MediaRecognition\Events\LabelAnalysisCompleted;
 use Meema\MediaRecognition\Events\ModerationAnalysisCompleted;
@@ -25,7 +26,15 @@ class IncomingWebhookController extends Controller
     {
         $message = $this->ensureSubscriptionIsConfirmed();
 
+        Log::info('incoming rekognition webhook message', $message);
+
+        if (!array_key_exists('Status', $message)) {
+            Log::alert('incoming rekognition webhook: "Status"-key does not exist');
+            return;
+        }
+
         if ($message['Status'] !== 'SUCCEEDED') {
+            Log::alert('incoming rekognition webhook: "Status"-field value does not equal "SUCCEEDED"');
             return;
         }
 
@@ -81,6 +90,6 @@ class IncomingWebhookController extends Controller
             Http::get($message['SubscribeURL']);
         }
 
-        return $message;
+        return json_decode($message['Message'], true);
     }
 }
