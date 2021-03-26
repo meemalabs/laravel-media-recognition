@@ -32,7 +32,7 @@ trait Recognizable
     /**
      * Return all recognition data.
      * The return value "null" indicates that a recognition has been ran, but it just has no results.
-     * Please note, the Rekognition response is different from a "video" to an "image".
+     * Please note, the "Facial Rekognition" response is different from a "video" to an "image".
      *
      * @return array
      */
