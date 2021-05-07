@@ -5,9 +5,8 @@
 [![StyleCI](https://github.styleci.io/repos/227280228/shield?branch=main)](https://github.styleci.io/repos/227280228)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/meema/laravel-media-recognition.svg?style=flat-square)](https://packagist.org/packages/meema/laravel-media-recognition)
+[![Discord](https://img.shields.io/discord/834503516134441012?label=discord&dstyle=flat)](https://discord.meema.io)
 [![License](https://img.shields.io/github/license/meemalabs/laravel-media-recognition.svg?style=flat-square)](https://github.com/meemalabs/laravel-media-recognition/blob/main/LICENSE.md)
-<!-- [[![Test](https://github.com/meemalabs/laravel-media-recognition/workflows/Test/badge.svg?branch=main)](https://github.com/meemalabs/laravel-media-recognition/actions) -->
-<!-- [[![Build Status](wip)](ghactions) -->
 
 At the current state, this is a wrapper package for AWS Rekognition with some extra handy methods.
 
