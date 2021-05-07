@@ -1,12 +1,12 @@
 # Media Recognition Package for Laravel
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/meema/laravel-media-recognition.svg?style=flat-square)](https://packagist.org/packages/meema/laravel-media-recognition)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/meema/laravel-media-recognition.svg?style=flat)](https://packagist.org/packages/meema/laravel-media-recognition)
 [![GitHub Workflow Status](https://github.com/meemalabs/laravel-media-recognition/actions/workflows/run-tests.yml/badge.svg?label=tests)](https://github.com/meemalabs/laravel-media-recognition)
-[![StyleCI](https://github.styleci.io/repos/227280228/shield?branch=main)](https://github.styleci.io/repos/227280228)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/meema/laravel-media-recognition.svg?style=flat-square)](https://packagist.org/packages/meema/laravel-media-recognition)
+[![StyleCI](https://github.styleci.io/repos/227280228/shield?branch=main&style=flat)](https://github.styleci.io/repos/227280228)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/meemalabs/laravel-media-recognition/?branch=main)
+[![Total Downloads](https://img.shields.io/packagist/dt/meema/laravel-media-recognition.svg?style=flat)](https://packagist.org/packages/meema/laravel-media-recognition)
 [![Discord](https://img.shields.io/discord/834503516134441012?label=discord&dstyle=flat)](https://discord.meema.io)
-[![License](https://img.shields.io/github/license/meemalabs/laravel-media-recognition.svg?style=flat-square)](https://github.com/meemalabs/laravel-media-recognition/blob/main/LICENSE.md)
+[![License](https://img.shields.io/github/license/meemalabs/laravel-media-recognition.svg?style=flat)](https://github.com/meemalabs/laravel-media-recognition/blob/main/LICENSE.md)
 
 At the current state, this is a wrapper package for AWS Rekognition with some extra handy methods.
 
