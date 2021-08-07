@@ -12,7 +12,7 @@ At the current state, this is a wrapper package for AWS Rekognition with some ex
 
 ![laravel-media-recognition package image](https://banners.beyondco.de/Media%20Recognition.png?theme=light&packageManager=composer+require&packageName=meema%2Flaravel-media-recognition&pattern=architect&style=style_1&description=Easily+%26+quickly+recognize+the+content+of+your+images+%26+video+content&md=1&showWatermark=1&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
 
-## Usage
+## 💡 Usage
 
 ``` php
 use Meema\MediaRecognition\Facades\Recognize;
@@ -45,7 +45,7 @@ $media = Media::first();
 $media->recognize($path)->detectFaces(); // you may chain any of the detection methods
 ```
 
-## Installation
+## 🐙 Installation
 
 You can install the package via composer:
 
@@ -184,7 +184,7 @@ Finally, we need to ensure the subscription is confirmed. By navigating to the `
 
 ![AWS SNS Subscription Confirmation Screenshot](https://i.imgur.com/oTPwNen.png)
 
-By default, AWS will have sent a post request to URL you defined in your "Subscription" setup. This package automatically handles the "confirmation" part. In case there is an issue and it is not confirmed yet, please click on the "Request confirmation" button as seen in the screenshot above. 
+By default, AWS will have sent a post request to URL you defined in your "Subscription" setup. This package automatically handles the "confirmation" part. In case there is an issue and it is not confirmed yet, please click on the "Request confirmation" button as seen in the screenshot above.
 
 You can also view the request in the Expose interface, by visiting the "Dashboard Url", which should be similar to: `http://127.0.0.1:4040`
 
@@ -200,32 +200,42 @@ From: `AWS_SECRET_ACCESS_KEY` - To: e.g. `VAPOR_SECRET_ACCESS_KEY`
 
 and, lastly, please ensure that your Vapor environment has these values defined.
 
-### Testing
+## 🧪 Testing
 
 ``` bash
 composer test
 ```
 
-### Changelog
+## 📈 Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+Please see our [releases](https://github.com/meemalabs/laravel-media-recognition/releases) page for more information on what has changed recently.
 
-## Contributing
+## 💪🏼 Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
-### Security
+## 🏝 Community
 
-If you discover any security related issues, please email [security@meema.io](security@meema.io) instead of using the issue tracker.
+For help, discussion about best practices, or any other conversation that would benefit from being searchable:
 
-## Credits
+[Media Recognition on GitHub](https://github.com/meemalabs/laravel-media-recognition/discussions)
+
+For casual chit-chat with others using this package:
+
+[Join the Meema Discord Server](https://discord.meema.io)
+
+## 🚨 Security
+
+Please review [our security policy](https://github.com/meemalabs/laravel-media-recognition/security/policy) on how to report security vulnerabilities.
+
+## 🙏🏼 Credits
 
 - [Chris Breuer](https://github.com/Chris1904)
 - [Folks at Meema](https://github.com/meemalabs)
 - [All Contributors](../../contributors)
 
-## License
+## 📄 License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). Please see [LICENSE](LICENSE.md) for more information.
 
 Made with ❤️ by Meema, Inc.
