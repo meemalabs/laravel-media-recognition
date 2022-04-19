@@ -13,7 +13,7 @@ class MediaRecognitionManager extends Manager
     /**
      * Get a driver instance.
      *
-     * @param string|null $name
+     * @param  string|null  $name
      * @return mixed
      */
     public function engine($name = null)
@@ -25,6 +25,7 @@ class MediaRecognitionManager extends Manager
      * Create an Amazon MediaRecognition Converter instance.
      *
      * @return \Meema\MediaRecognition\Recognizers\Rekognition
+     *
      * @throws \Exception
      */
     public function createMediaRecognitionDriver(): Rekognition
@@ -43,8 +44,8 @@ class MediaRecognitionManager extends Manager
     /**
      * Sets the Recognition client.
      *
-     * @param array $config
-     * @param \Aws\Credentials\Credentials $credentials
+     * @param  array  $config
+     * @param  \Aws\Credentials\Credentials  $credentials
      * @return \Aws\Rekognition\RekognitionClient
      */
     protected function setMediaRecognitionClient(array $config, Credentials $credentials): RekognitionClient
@@ -59,7 +60,7 @@ class MediaRecognitionManager extends Manager
     /**
      * Get credentials of AWS.
      *
-     * @param array $credentials
+     * @param  array  $credentials
      * @return \Aws\Credentials\Credentials
      */
     protected function getCredentials(array $credentials): Credentials

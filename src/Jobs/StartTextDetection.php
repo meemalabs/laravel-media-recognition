@@ -34,10 +34,10 @@ class StartTextDetection implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param string $path
-     * @param string|null $mimeType
-     * @param int|null $mediaId
-     * @param array $filters
+     * @param  string  $path
+     * @param  string|null  $mimeType
+     * @param  int|null  $mediaId
+     * @param  array  $filters
      */
     public function __construct(string $path, $mimeType = null, $mediaId = null, $filters = [])
     {
@@ -51,6 +51,7 @@ class StartTextDetection implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     *
      * @throws \Exception
      */
     public function handle()

@@ -16,8 +16,7 @@ trait CanRecognizeImages
     /**
      * Set the base64 encoded image.
      *
-     * @param string $blob
-     *
+     * @param  string  $blob
      * @return $this
      */
     public function blob(string $blob)
@@ -31,6 +30,7 @@ trait CanRecognizeImages
      * Sets the image to be analyzed.
      *
      * @return void
+     *
      * @throws \Exception
      */
     protected function setImageSettings(): void
@@ -61,9 +61,10 @@ trait CanRecognizeImages
     }
 
     /**
-     * @param int|null $minConfidence
-     * @param null $maxLabels
+     * @param  int|null  $minConfidence
+     * @param  null  $maxLabels
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectImageLabels($minConfidence = null, $maxLabels = null)
@@ -88,8 +89,9 @@ trait CanRecognizeImages
     }
 
     /**
-     * @param array $attributes
+     * @param  array  $attributes
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectImageFaces($attributes = ['DEFAULT'])
@@ -110,8 +112,9 @@ trait CanRecognizeImages
     }
 
     /**
-     * @param int|null $minConfidence
+     * @param  int|null  $minConfidence
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectImageModeration($minConfidence = null)
@@ -132,8 +135,9 @@ trait CanRecognizeImages
     }
 
     /**
-     * @param array|null $filters
+     * @param  array|null  $filters
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectImageText(array $filters = null)
