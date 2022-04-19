@@ -7,9 +7,9 @@ interface MediaRecognition
     /**
      * Sets the source/path where the file is stored.
      *
-     * @param string $source
-     * @param string|null $mimeType
-     * @param int|null $mediaId
+     * @param  string  $source
+     * @param  string|null  $mimeType
+     * @param  int|null  $mediaId
      * @return $this
      */
     public function source(string $source, string $mimeType = null, int $mediaId = null);
@@ -17,9 +17,9 @@ interface MediaRecognition
     /**
      * Sets the source/path where the file is stored.
      *
-     * @param string $path
-     * @param string|null $mimeType
-     * @param int|null $mediaId
+     * @param  string  $path
+     * @param  string|null  $mimeType
+     * @param  int|null  $mediaId
      * @return $this
      */
     public function path(string $path, string $mimeType = null, int $mediaId = null);
@@ -27,9 +27,10 @@ interface MediaRecognition
     /**
      * Detects labels/objects in an image or video.
      *
-     * @param int|null $minConfidence
-     * @param int|null $maxLabels
+     * @param  int|null  $minConfidence
+     * @param  int|null  $maxLabels
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectLabels($minConfidence = null, $maxLabels = null);
@@ -37,9 +38,10 @@ interface MediaRecognition
     /**
      * Detects labels/objects in an image.
      *
-     * @param int|null $minConfidence
-     * @param int|null $maxLabels
+     * @param  int|null  $minConfidence
+     * @param  int|null  $maxLabels
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectImageLabels($minConfidence = null, $maxLabels = null);
@@ -47,9 +49,10 @@ interface MediaRecognition
     /**
      * Detects labels/objects in a video.
      *
-     * @param int|null $minConfidence
-     * @param int|null $maxLabels
+     * @param  int|null  $minConfidence
+     * @param  int|null  $maxLabels
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectVideoLabels($minConfidence = null, $maxLabels = null);
@@ -57,8 +60,9 @@ interface MediaRecognition
     /**
      * Detects faces in an image or video & analyzes them.
      *
-     * @param array $attributes
+     * @param  array  $attributes
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectFaces($attributes = ['DEFAULT']);
@@ -66,8 +70,9 @@ interface MediaRecognition
     /**
      * Detects faces in an image & analyzes them.
      *
-     * @param array $attributes
+     * @param  array  $attributes
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectImageFaces($attributes = ['DEFAULT']);
@@ -75,8 +80,9 @@ interface MediaRecognition
     /**
      * Detects faces in an image & analyzes them.
      *
-     * @param array $attributes
+     * @param  array  $attributes
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectVideoFaces($attributes = ['DEFAULT']);
@@ -85,8 +91,9 @@ interface MediaRecognition
      * Detects moderation labels in an image or video.
      * This can be useful for children-friendly images or NSFW images/videos.
      *
-     * @param int|null $minConfidence
+     * @param  int|null  $minConfidence
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectModeration($minConfidence = null);
@@ -95,8 +102,9 @@ interface MediaRecognition
      * Detects moderation labels in an image.
      * This can be useful for children-friendly images or NSFW images.
      *
-     * @param int|null $minConfidence
+     * @param  int|null  $minConfidence
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectImageModeration($minConfidence = null);
@@ -105,8 +113,9 @@ interface MediaRecognition
      * Detects moderation labels in an video.
      * This can be useful for children-friendly videos or NSFW videos.
      *
-     * @param int|null $minConfidence
+     * @param  int|null  $minConfidence
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectVideoModeration($minConfidence = null);
@@ -114,8 +123,9 @@ interface MediaRecognition
     /**
      * Detects text in an image or video (OCR).
      *
-     * @param array|null $filters
+     * @param  array|null  $filters
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectText(array $filters = null);
@@ -123,8 +133,9 @@ interface MediaRecognition
     /**
      * Detects text in an image (OCR).
      *
-     * @param array|null $filters
+     * @param  array|null  $filters
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectImageText(array $filters = null);
@@ -132,8 +143,9 @@ interface MediaRecognition
     /**
      * Detects text in a video (OCR).
      *
-     * @param array|null $filters
+     * @param  array|null  $filters
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectVideoText(array $filters = null);
@@ -141,9 +153,10 @@ interface MediaRecognition
     /**
      * Get the "faces" from the video analysis.
      *
-     * @param string $jobId
-     * @param int $mediaId
+     * @param  string  $jobId
+     * @param  int  $mediaId
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function getFacesByJobId(string $jobId, int $mediaId);
@@ -151,9 +164,10 @@ interface MediaRecognition
     /**
      * Get the labels from the video analysis.
      *
-     * @param string $jobId
-     * @param int $mediaId
+     * @param  string  $jobId
+     * @param  int  $mediaId
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function getLabelsByJobId(string $jobId, int $mediaId);
@@ -161,9 +175,10 @@ interface MediaRecognition
     /**
      * Get the "content moderation" from the video analysis.
      *
-     * @param string $jobId
-     * @param int $mediaId
+     * @param  string  $jobId
+     * @param  int  $mediaId
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function getContentModerationByJobId(string $jobId, int $mediaId);
@@ -171,9 +186,10 @@ interface MediaRecognition
     /**
      * Get the "text detection" from the video analysis.
      *
-     * @param string $jobId
-     * @param int $mediaId
+     * @param  string  $jobId
+     * @param  int  $mediaId
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function getTextDetectionByJobId(string $jobId, int $mediaId);

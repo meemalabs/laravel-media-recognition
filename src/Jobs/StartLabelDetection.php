@@ -36,11 +36,11 @@ class StartLabelDetection implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param string $path
-     * @param string|null $mimeType
-     * @param int|null $mediaId
-     * @param int|null $minConfidence
-     * @param int $maxResults
+     * @param  string  $path
+     * @param  string|null  $mimeType
+     * @param  int|null  $mediaId
+     * @param  int|null  $minConfidence
+     * @param  int  $maxResults
      */
     public function __construct(string $path, $mimeType = null, $mediaId = null, $minConfidence = null, $maxResults = 1000)
     {
@@ -55,6 +55,7 @@ class StartLabelDetection implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     *
      * @throws \Exception
      */
     public function handle()

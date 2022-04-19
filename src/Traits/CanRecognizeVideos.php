@@ -12,6 +12,7 @@ trait CanRecognizeVideos
      *
      * @param $type - used to create a readable identifier.
      * @return void
+     *
      * @throws \Exception
      */
     protected function setVideoSettings($type): void
@@ -49,9 +50,10 @@ trait CanRecognizeVideos
     /**
      * Starts asynchronous detection of labels/objects in a stored video.
      *
-     * @param int|null $minConfidence
-     * @param int $maxResults
+     * @param  int|null  $minConfidence
+     * @param  int  $maxResults
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function detectVideoLabels($minConfidence = null, $maxResults = 1000)
@@ -70,8 +72,9 @@ trait CanRecognizeVideos
     }
 
     /**
-     * @param array $attributes
+     * @param  array  $attributes
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectVideoFaces($attributes = 'DEFAULT')
@@ -92,8 +95,9 @@ trait CanRecognizeVideos
     /**
      * Starts asynchronous detection of unsafe content in a stored video.
      *
-     * @param int|null $minConfidence
+     * @param  int|null  $minConfidence
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectVideoModeration($minConfidence = null)
@@ -114,8 +118,9 @@ trait CanRecognizeVideos
     /**
      * Starts asynchronous detection of text in a stored video.
      *
-     * @param array|null $filters
+     * @param  array|null  $filters
      * @return mixed
+     *
      * @throws \Exception
      */
     public function detectVideoText(array $filters = null)
@@ -138,9 +143,10 @@ trait CanRecognizeVideos
     /**
      * Get the labels from the video analysis.
      *
-     * @param string $jobId
-     * @param int|null $mediaId
+     * @param  string  $jobId
+     * @param  int|null  $mediaId
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function getLabelsByJobId(string $jobId, int $mediaId = null)
@@ -161,9 +167,10 @@ trait CanRecognizeVideos
     /**
      * Get the faces from the video analysis.
      *
-     * @param string $jobId
-     * @param int|null $mediaId
+     * @param  string  $jobId
+     * @param  int|null  $mediaId
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function getFacesByJobId(string $jobId, int $mediaId = null)
@@ -184,9 +191,10 @@ trait CanRecognizeVideos
     /**
      * Get the "content moderation" from the video analysis.
      *
-     * @param string $jobId
-     * @param int|null $mediaId
+     * @param  string  $jobId
+     * @param  int|null  $mediaId
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function getContentModerationByJobId(string $jobId, int $mediaId = null)
@@ -207,9 +215,10 @@ trait CanRecognizeVideos
     /**
      * Get the faces from a video analysis.
      *
-     * @param string $jobId
-     * @param int|null $mediaId
+     * @param  string  $jobId
+     * @param  int|null  $mediaId
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function getTextDetectionByJobId(string $jobId, int $mediaId = null)

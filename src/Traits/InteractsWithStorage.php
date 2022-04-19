@@ -35,7 +35,7 @@ trait InteractsWithStorage
     /**
      * Set which S3 disk to use.
      *
-     * @param string $disk
+     * @param  string  $disk
      * @return $this
      */
     public function disk(string $disk)
@@ -48,9 +48,9 @@ trait InteractsWithStorage
     /**
      * The equivalent of the S3 Key / the path of the file inside the bucket.
      *
-     * @param string $source
-     * @param string|null $mimeType
-     * @param int|null $mediaId
+     * @param  string  $source
+     * @param  string|null  $mimeType
+     * @param  int|null  $mediaId
      * @return $this
      */
     public function source(string $source, string $mimeType = null, int $mediaId = null)
@@ -65,9 +65,9 @@ trait InteractsWithStorage
     /**
      * Alias of source().
      *
-     * @param string $source
-     * @param string|null $mimeType
-     * @param int|null $mediaId
+     * @param  string  $source
+     * @param  string|null  $mimeType
+     * @param  int|null  $mediaId
      * @return $this
      */
     public function path(string $source, string $mimeType = null, int $mediaId = null)
@@ -79,6 +79,7 @@ trait InteractsWithStorage
      * Ensures the source/path not to be null if it is null it will thrown an exception.
      *
      * @return void
+     *
      * @throws \Exception
      */
     public function ensureSourceIsNotNull()
