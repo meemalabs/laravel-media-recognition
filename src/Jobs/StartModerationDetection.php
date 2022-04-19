@@ -34,10 +34,10 @@ class StartModerationDetection implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param string $path
-     * @param string|null $mimeType
-     * @param int|null $mediaId
-     * @param int|null $minConfidence
+     * @param  string  $path
+     * @param  string|null  $mimeType
+     * @param  int|null  $mediaId
+     * @param  int|null  $minConfidence
      */
     public function __construct(string $path, $mimeType = null, $mediaId = null, $minConfidence = null)
     {
@@ -51,6 +51,7 @@ class StartModerationDetection implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     *
      * @throws \Exception
      */
     public function handle()

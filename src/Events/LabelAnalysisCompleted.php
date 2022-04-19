@@ -18,7 +18,7 @@ class LabelAnalysisCompleted
      * Create a new event instance.
      *
      * @param $message
-     * @param int|null $mediaId
+     * @param  int|null  $mediaId
      */
     public function __construct($message, int $mediaId = null)
     {

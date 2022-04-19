@@ -20,8 +20,8 @@ trait Recognizable
     /**
      * Start a media "recognition".
      *
-     * @param string $path
-     * @param string|null $mimeType
+     * @param  string  $path
+     * @param  string|null  $mimeType
      * @return \Meema\MediaRecognition\Contracts\MediaRecognition
      */
     public function recognize(string $path, string $mimeType = null)

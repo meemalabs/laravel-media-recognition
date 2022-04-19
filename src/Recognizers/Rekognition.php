@@ -36,7 +36,8 @@ class Rekognition implements MediaRecognitionInterface
     /**
      * Construct converter.
      *
-     * @param \Aws\Rekognition\RekognitionClient $client
+     * @param  \Aws\Rekognition\RekognitionClient  $client
+     *
      * @throws \Exception
      */
     public function __construct(RekognitionClient $client)
@@ -57,9 +58,10 @@ class Rekognition implements MediaRecognitionInterface
     /**
      * Detects labels/objects in an image.
      *
-     * @param int|null $minConfidence
-     * @param int|null $maxLabels
+     * @param  int|null  $minConfidence
+     * @param  int|null  $maxLabels
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function detectLabels($minConfidence = null, $maxLabels = null)
@@ -86,8 +88,9 @@ class Rekognition implements MediaRecognitionInterface
     /**
      * Detects faces in an image & analyzes them.
      *
-     * @param array $attributes
+     * @param  array  $attributes
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function detectFaces($attributes = ['DEFAULT'])
@@ -117,8 +120,9 @@ class Rekognition implements MediaRecognitionInterface
      * Detects moderation labels in an image.
      * This can be useful for children-friendly images or NSFW images.
      *
-     * @param int|null $minConfidence
+     * @param  int|null  $minConfidence
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function detectModeration($minConfidence = null)
@@ -145,8 +149,9 @@ class Rekognition implements MediaRecognitionInterface
     /**
      * Detects text in an image (OCR).
      *
-     * @param array|null $filters
+     * @param  array|null  $filters
      * @return \Aws\Result
+     *
      * @throws \Exception
      */
     public function detectText(array $filters = null)
@@ -174,6 +179,7 @@ class Rekognition implements MediaRecognitionInterface
      * @param $type
      * @param $results
      * @return mixed
+     *
      * @throws \Exception
      */
     protected function updateOrCreate($type, $results)
@@ -187,9 +193,10 @@ class Rekognition implements MediaRecognitionInterface
     }
 
     /**
-     * @param string $jobId
-     * @param string $type
+     * @param  string  $jobId
+     * @param  string  $type
      * @return void
+     *
      * @throws \Exception
      */
     protected function updateJobId(string $jobId, string $type)
@@ -205,9 +212,9 @@ class Rekognition implements MediaRecognitionInterface
     }
 
     /**
-     * @param array $results
-     * @param string $type
-     * @param int $mediaId
+     * @param  array  $results
+     * @param  string  $type
+     * @param  int  $mediaId
      * @return void
      */
     protected function updateVideoResults(array $results, string $type, int $mediaId)

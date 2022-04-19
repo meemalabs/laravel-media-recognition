@@ -52,9 +52,10 @@ class IncomingWebhookController extends Controller
     }
 
     /**
-     * @param string $type
-     * @param array $message
-     * @param int|null $mediaId
+     * @param  string  $type
+     * @param  array  $message
+     * @param  int|null  $mediaId
+     *
      * @throws \Exception
      */
     public function fireEventFor(string $type, array $message, int $mediaId = null)
